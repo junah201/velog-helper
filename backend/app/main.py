@@ -17,6 +17,7 @@ import uvicorn
 from app.database import models, schemas, crud
 from app.database.database import SessionLocal, engine
 from app.connom.config import SQLALCHEMY_DATABASE_URL
+from app.tasks import tasks
 
 logger.setLevel(logging.INFO)
 
@@ -98,6 +99,18 @@ async def read_archive(user_id: str, db: Session = Depends(get_db)):
 async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_id(db, user_id=user_id)
     return {"is_bookmarked": blog_id in db_user.blogs["blogs"]}
+
+
+@app.on_event("startup")
+@repeat_every(seconds=60 * 2)  # 2 min
+async def update_new_post() -> None:
+    logger.info("update new post start")
+    with sessionmaker.context_session() as db:
+        blogs = deepcopy(crud.get_blogs(db))
+    with sessionmaker.context_session() as db:
+        await tasks.update_new_post(db, blogs)
+    logger.info("update new post done")
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
