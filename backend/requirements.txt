@@ -1,0 +1,10 @@
+fastapi == 0.79.0
+requests-async == 0.6.2
+SQLAlchemy == 1.4.39
+fastapi-utils == 0.2.1
+uvicorn == 0.18.2
+requests == 2.28.1
+aiohttp == 3.8.1
+anyio == 3.6.1
+beautifulsoup4 == 4.11.1
+pydantic == 1.9.1
