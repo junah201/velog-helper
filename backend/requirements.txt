@@ -8,3 +8,4 @@ aiohttp == 3.8.1
 anyio == 3.6.1
 beautifulsoup4 == 4.11.1
 pydantic == 1.9.1
+mysqlclient == 2.1.1
