@@ -1,12 +1,12 @@
 .notice-button {
   fill: var(--text1);
-  background-color: var(--bg-page2);
+  background-color: inherit;
   border: none;
 }
 
 .notice-button > svg {
   fill: var(--text1);
-  background-color: var(--bg-page2);
+  background-color: inherit;
 }
 
 .notice-menu-div {

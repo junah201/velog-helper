@@ -8,8 +8,7 @@
   Velog을 확장된 기능과 함께 사용해보세요.
 </p>
 
-
-# 기능 
+# 기능
 
 ## Velog Helper는 다음과 같은 기능을 지원합니다.
 
@@ -19,7 +18,7 @@
 ## Velog Helper는 다음과 같은 기능을 지원할 예정입니다.
 
 - 새 글 에디터에서 더 많은 단축키 지원
-(예 : art + ↑ 줄 이동)
+  (예 : art + ↑ 줄 이동)
 
 # 설치 방법
 
@@ -38,7 +37,7 @@
 
 ![image](https://user-images.githubusercontent.com/75025529/184528407-f859f358-0319-4f83-962b-f79db052f2ca.png)
 
-왼쪽 위에 `압축해제된 확장 프로그램을 로드합니다.`를 선택해주세요. 
+왼쪽 위에 `압축해제된 확장 프로그램을 로드합니다.`를 선택해주세요.
 이후 압축 해제한 폴더를 선택해주세요.
 
 ![image](https://user-images.githubusercontent.com/75025529/184528604-ca6b3bc1-f5c4-48c6-a72e-ea9c88ee0f97.png)
@@ -60,12 +59,6 @@
 # 버그
 
 Velog Helper는 아직 버그가 많아요 ㅠㅠ 이슈 및 PR은 항상 환영합니다.
-
-## 색상 버그
-
-다크 모드 상태에서 스크롤을 내렸을 때 생기는 헤더에서는 버튼의 백그라운드 색상이 실제 헤더의 백그라운드 색상과 다릅니다. 
-
-![image](https://velog.velcdn.com/images/junah201/post/c72f85d0-7c52-4faa-b47d-184bd2ead0d8/image.png)
 
 ## 북마크 버튼 반복클릭 시 버그
 
