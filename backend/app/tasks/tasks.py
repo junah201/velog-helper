@@ -19,11 +19,12 @@ async def update_new_post(db: Session, blogs) -> None:
             if post_upload_time <= blog.last_uploaded_at:
                 continue
             now = datetime.datetime.now()
+
             add_data = {
                 "title": post["title"],
                 "link": post["url_slug"],
                 "date": str(post_upload_time),
-                "img": post["thumbnail"]
+                "img": post["user"]["profile"]["thumbnail"]
             }
 
             for user_id in blog.users["users"]:
