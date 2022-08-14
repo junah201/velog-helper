@@ -1,13 +1,6 @@
 const Constants = {
-  BACKEND_URL: "http://127.0.0.1:8000",
+  BACKEND_URL: "https://velog-helper.herokuapp.com",
 };
-
-async function getCurrentTab() {
-  let queryOptions = { active: true, lastFocusedWindow: true };
-  // `tab` will either be a `tabs.Tab` instance or `undefined`.
-  let [tab] = await chrome.tabs.query(queryOptions);
-  return tab;
-}
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.identity.getProfileUserInfo(function (userInfo) {

@@ -14,8 +14,6 @@ function createNoticeItems() {
       message: "get_new_post",
     },
     (response) => {
-      console.log(response);
-
       response.data.forEach(function (item, index, array) {
         console.log(item);
         const itemDiv = createElement("div", { class: "notice-item" });
@@ -59,13 +57,10 @@ function add_notice_button(div) {
   div.append(noticeDiv);
 
   noticeButton.addEventListener("click", () => {
-    console.log("button");
     if (noticeDiv.classList.contains("undisplay")) {
       noticeDiv.classList.remove("undisplay");
-      console.log("b - dis");
     } else {
       noticeDiv.classList.add("undisplay");
-      console.log("b - undis");
     }
   });
 
@@ -77,7 +72,6 @@ function add_notice_button(div) {
   // });
 }
 
-console.log(document.querySelector(".notice-button"));
 if (document.querySelector(".notice-button") == null) {
   const divs = document.querySelectorAll(".sc-cxpSdN");
   divs.forEach(function (div) {
