@@ -13,7 +13,7 @@ async def update_new_post(db: Session, blogs) -> None:
         posts = await get_new_posts(username=blog.id, limit=10)
         last_uploaded_at = datetime.datetime.strptime(
             posts[0]["released_at"][:19], "%Y-%m-%dT%H:%M:%S")
-        for post in posts:
+        for post in reversed(posts):
             post_upload_time = datetime.datetime.strptime(
                 post["released_at"][:19], "%Y-%m-%dT%H:%M:%S")
             if post_upload_time <= blog.last_uploaded_at:
@@ -41,4 +41,4 @@ async def update_new_post(db: Session, blogs) -> None:
             {"last_uploaded_at": last_uploaded_at})
 
     db.commit()
-    print("update new post")
+    print("update new post done")

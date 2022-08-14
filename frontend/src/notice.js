@@ -14,7 +14,7 @@ function createNoticeItems() {
       message: "get_new_post",
     },
     (response) => {
-      response.data.forEach(function (item, index, array) {
+      response.data.reverse().forEach(function (item, index, array) {
         console.log(item);
         const itemDiv = createElement("div", { class: "notice-item" });
         const itemBlogImg = createElement("img", {
