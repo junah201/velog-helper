@@ -1,7 +1,7 @@
 import asyncio
 import aiohttp
 import json
-from app.connom.consts import VELOG_API_URL
+from app.common.consts import VELOG_API_URL
 
 query = """
 query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {

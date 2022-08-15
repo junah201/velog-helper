@@ -16,7 +16,7 @@ import uvicorn
 
 from app.database import models, schemas, crud
 from app.database.database import SessionLocal, engine
-from app.connom.config import SQLALCHEMY_DATABASE_URL
+from app.common.config import SQLALCHEMY_DATABASE_URL
 from app.tasks import tasks
 
 logger.setLevel(logging.INFO)

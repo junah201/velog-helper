@@ -1,2 +1,2 @@
-backend/app/connom/config.py
+backend/app/common/config.py
 *.pyc

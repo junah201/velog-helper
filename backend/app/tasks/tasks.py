@@ -2,7 +2,7 @@ import datetime
 from dataclasses import asdict
 from sqlalchemy.orm import Session
 from app.database import models, schemas
-from app.connom.consts import VELOG_RSS_URL
+from app.common.consts import VELOG_RSS_URL
 from app.utils.crawler import get_new_posts
 
 
