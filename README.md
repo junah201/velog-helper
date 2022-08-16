@@ -20,29 +20,15 @@
 - 새 글 에디터에서 더 많은 단축키 지원
   (예 : art + ↑ 줄 이동)
 
-# 설치 방법
+# 설치 방벙
+- 일반적인 방법
+1. [Velog Helper](https://chrome.google.com/webstore/detail/velog-helper/limdbpmjjehbmlnmkmaadbkklkmohbag?hl=ko)에 들어간다.
+2. 설치한다.
 
-## 등록 이전 (2022.08.14 ~ )
-
-크롬 확장프로그램 스토어에 등록 중입니다. 등록 전까지는 임시로 직접 설치해서 사용해주세요. (2022.08.14 기준 검토 중)
-
-가장 최신 릴리스를 설치해주세요. [V0.1.0](https://github.com/junah201/velog-helper/releases/tag/v0.1.0)
-설치 후 압축을 풀어주세요. (반디집 이용 권장)
-
-`chrome://extensions/`에 접속합니다.
-
-![image](https://user-images.githubusercontent.com/75025529/184528353-e96b6704-11d3-4050-9291-5c6ee950692e.png)
-
-오른쪽 위에 `개발자 모드`를 활성화 해주세요.
-
-![image](https://user-images.githubusercontent.com/75025529/184528407-f859f358-0319-4f83-962b-f79db052f2ca.png)
-
-왼쪽 위에 `압축해제된 확장 프로그램을 로드합니다.`를 선택해주세요.
-이후 압축 해제한 폴더를 선택해주세요.
-
-![image](https://user-images.githubusercontent.com/75025529/184528604-ca6b3bc1-f5c4-48c6-a72e-ea9c88ee0f97.png)
-
-이후 로딩 된 Velog Helper 를 이용해주세요.
+- 대안책
+1. [크롬 확장 프로그램 스토어](https://chrome.google.com/webstore/category/extensions?hl=ko)에 접속한다.
+2. `Velog Helper`를 검색한다.
+3. Velog Helper를 설치한다.
 
 # 개발 예정 (TO DO)
 
