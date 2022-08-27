@@ -20,7 +20,7 @@
 - 새 글 에디터에서 더 많은 단축키 지원
   (예 : art + ↑ 줄 이동)
 
-# 설치 방벙
+# 설치 방법
 - 일반적인 방법
 1. [Velog Helper](https://chrome.google.com/webstore/detail/velog-helper/limdbpmjjehbmlnmkmaadbkklkmohbag?hl=ko)에 들어간다.
 2. 설치한다.
