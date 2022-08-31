@@ -2,33 +2,52 @@ const Constants = {
   BACKEND_URL: "https://velog-helper.herokuapp.com",
 };
 
+function registUser() {
+  chrome.storage.local.get(["user_id", "user_email"], (data) => {
+    fetch(`${Constants.BACKEND_URL}/user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: data.user_id,
+        email: data.user_email,
+      }),
+    }).then((response) => console.log(response));
+  });
+}
+
 chrome.runtime.onInstalled.addListener(() => {
   chrome.identity.getProfileUserInfo(function (userInfo) {
-    // 로그인 되어 있지 않은 유저일 경우
+    // 로그인 되어 있지 않은 유저일 경우 -> 타임스템프와 IP를 임시 아이디로 지정
+    // TODO : 임시 아이디를 만드는 과정에서 해쉬 등 암호화 과정이 필요함
     if (userInfo.email === "") {
-      // TODO: 모르겠다 나중에 개발해야지
-    }
-    // 로그인 되어 있는 유저 일 경우
-    else {
-      console.log(userInfo);
-      chrome.storage.local.set({
-        user_id: userInfo.id,
-        user_email: userInfo.email,
-      });
-    }
-    // 백엔드에 유저 등록
-    chrome.storage.local.get(["user_id", "user_email"], (data) => {
-      fetch(`${Constants.BACKEND_URL}/user`, {
-        method: "POST",
+      fetch("https://api.ipify.org?format=json", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id: data.user_id,
-          email: data.user_email,
-        }),
-      }).then((response) => console.log(response));
-    });
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          chrome.storage.local.set({
+            user_id: "" + new Date().getTime() + data.ip,
+            user_email: userInfo.email,
+          });
+        })
+        .then(registUser);
+    }
+    // 로그인 되어 있는 유저 일 경우 -> 크롬 아이디 이용
+    else {
+      chrome.storage.local
+        .set({
+          user_id: userInfo.id,
+          user_email: userInfo.email,
+        })
+        .then(registUser);
+    }
   });
 });
 
@@ -162,6 +181,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           sendResponse({
             message: "success",
             is_bookmarked: data.is_bookmarked,
+          });
+          return;
+        });
+    });
+    return true;
+  } else if (request.message === "get_blogs") {
+    chrome.storage.local.get(["user_id"], (data) => {
+      fetch(`${Constants.BACKEND_URL}/${data.user_id}/blogs`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          sendResponse({
+            message: "success",
+            blogs: data.blogs,
           });
           return;
         });

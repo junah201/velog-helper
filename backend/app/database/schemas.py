@@ -23,7 +23,7 @@ class Blog(BlogBase):
 
 
 class UserBase(BaseModel):
-    id: int
+    id: str
     email: str
 
 

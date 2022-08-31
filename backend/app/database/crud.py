@@ -36,6 +36,18 @@ def get_blog_by_id(db: Session, blog_id: str, error: bool = True):
     return db_blog
 
 
+def get_blogs_by_user(db: Session, user_id: int):
+    db_user = db.query(models.User).filter(
+        models.User.id == user_id).first()
+    if(db_user == None):
+        raise NotFoundUser(user_id=user_id)
+    result = []
+    for blog_id in db_user.blogs["blogs"]:
+        result.append(db.query(models.Blog).filter(
+            models.Blog.id == blog_id).first())
+    return result
+
+
 def create_user(db: Session, user: schemas.UserCreate):
     now = datetime.datetime.now()
     if db.query(models.User).filter(models.User.id == user.id).first() != None:

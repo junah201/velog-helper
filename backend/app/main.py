@@ -80,6 +80,11 @@ async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_
     return crud.get_users(db, skip=skip, limit=limit)
 
 
+@app.get("/{user_id}/blogs", response_model=Dict)
+async def read_blogs_by_user(user_id: str, db: Session = Depends(get_db)):
+    return {"blogs": crud.get_blogs_by_user(db, user_id=user_id)}
+
+
 @app.post("/{user_id}/blog", response_model=schemas.User)
 async def add_bookmark_blog(user_id: str, blog_id: str, db: Session = Depends(get_db)):
     return crud.add_bookmark_blog(db, user_id=user_id, blog_id=blog_id)

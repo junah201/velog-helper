@@ -23,7 +23,7 @@ function add_bookmark_button() {
         },
         (response) => {
           if (response.message === "success") {
-            console.log("success add bookmark");
+            console.log("success delete bookmark");
           }
         }
       );
