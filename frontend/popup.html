@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <style>
       BODY {
         width: 520px;
-        min-height: 250px;
+        min-height: 400px;
       }
     </style>
+    <link rel="stylesheet" href="./src/notice.css" />
+    <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <h1>Velog Helper</h1>
+    <header>
+      <img src="icons/icon48.png" />
+      <button id="blog-button">블로그 목록</button>
+      <button id="notice-button">알림 목록</button>
+      <button id="setting-button">설정</button>
+    </header>
+    <main></main>
+    <script src="./src/util.js"></script>
+    <script src="./popup.js"></script>
   </body>
 </html>

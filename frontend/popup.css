@@ -1,0 +1,139 @@
+html {
+  background-color: white;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 18rem;
+}
+
+header {
+  background-color: #20c997;
+  height: 48px;
+  width: 100%;
+  display: flex;
+}
+
+header > button {
+  background-color: inherit;
+  color: white;
+  font-size: 20px;
+  display: inline;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 6px;
+  margin-right: 6px;
+  border: none;
+  font-weight: bold;
+}
+
+header > button:hover {
+  background-color: inherit;
+  filter: brightness(80%);
+}
+
+.header:nth-child(1) {
+  padding-top: 32px;
+}
+main > div {
+  display: none;
+}
+
+.notice-item {
+  border-bottom: 1px solid #8d8d8d;
+}
+
+.notice-item:hover {
+  filter: brightness(80%);
+}
+
+.notice-item a {
+  font-size: 1rem;
+}
+
+.notice-item div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+  padding: 12px;
+  margin-right: 12px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.blog-item {
+  display: flex;
+  border-bottom: 1px solid #8d8d8d;
+}
+
+.blog-item a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+  padding: 12px;
+
+  width: 400px;
+  color: black;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-decoration: none;
+  font-size: 1.25rem;
+  vertical-align: middle;
+}
+.blog-item a:visited {
+  text-decoration: none;
+}
+.blog-item a:hover {
+  text-decoration: none;
+}
+.blog-item a:focus {
+  text-decoration: none;
+}
+.blog-item a:hover,
+.blog-item a:active {
+  text-decoration: none;
+}
+
+.blog-img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 70%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #8d8d8d;
+  margin: 5px;
+  display: flex;
+  object-fit: cover;
+}
+
+.blog-item button {
+  height: 25px;
+  width: 25px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 0;
+  border: none;
+  background-image: url("img/X mark.svg");
+  background-size: cover;
+}
+
+.blog-item button:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.display {
+  display: inline;
+}
+
+.undisplay {
+  display: none;
+}

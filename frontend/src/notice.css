@@ -58,7 +58,6 @@
 
   width: 400px;
 
-  display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   text-decoration: none;
@@ -102,6 +101,9 @@
   width: 10%;
   height: 10%;
   border-radius: 70%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
   margin: 5px;
   display: flex;
 }
