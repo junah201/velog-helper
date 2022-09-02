@@ -5,18 +5,17 @@ import datetime
 import requests
 from bs4 import BeautifulSoup as bs
 
-from app.errors.exceptions import AlreadyBookmarkedBlog, NotFoundBlog, NotFoundUser, NotBookmarkedBlog, AlreadyRegistedUser
+from app.errors.exceptions import AlreadyBookmarkedBlog, NotFoundBlog, NotFoundUser, NotBookmarkedBlog, AlreadyRegistedUser, NotFoundBookmark
 
 
 def create_blog(db: Session, blog: schemas.BlogCreate):
     now = datetime.datetime.now()
     db_blog = models.Blog(
         id=blog.id,
-        users={"users": []},
         profile_img=get_profile_img_by_id(id=blog.id),
         created_at=now,
         updated_at=now,
-        last_uploaded_at=now
+        last_uploaded_at=datetime.date(2005, 2, 1)
     )
     db.add(db_blog)
     db.commit()
@@ -36,15 +35,12 @@ def get_blog_by_id(db: Session, blog_id: str, error: bool = True):
     return db_blog
 
 
-def get_blogs_by_user(db: Session, user_id: int):
-    db_user = db.query(models.User).filter(
-        models.User.id == user_id).first()
-    if(db_user == None):
-        raise NotFoundUser(user_id=user_id)
+def get_bookmarked_blogs_by_user(db: Session, user_id: int):
+    db_bookmark = db.query(models.Bookmark).filter(
+        models.Bookmark.user == user_id).all()
     result = []
-    for blog_id in db_user.blogs["blogs"]:
-        result.append(db.query(models.Blog).filter(
-            models.Blog.id == blog_id).first())
+    for bookmark in db_bookmark:
+        result.append(get_blog_by_id(db, blog_id=bookmark.blog))
     return result
 
 
@@ -55,9 +51,6 @@ def create_user(db: Session, user: schemas.UserCreate):
     db_user = models.User(
         id=user.id,
         email=user.email,
-        blogs={"blogs": []},
-        archive={"archive": []},
-        profile_img="tmp",
         created_at=now,
         updated_at=now,
     )
@@ -93,50 +86,43 @@ def get_profile_img_by_id(id: str) -> str:
 def add_bookmark_blog(db: Session, user_id: str, blog_id: str):
     now = datetime.datetime.now()
 
-    instance = db.query(models.Blog).filter(models.Blog.id == blog_id)
-    # 이미 등록된 블로그가 없으면 새로 등록
-    if instance.first() == None:
-        create_blog(db, schemas.BlogCreate(id=blog_id))
-    data = instance.first().users
-    if user_id in data["users"]:
-        raise AlreadyBookmarkedBlog(user_id=user_id, blog_id=blog_id)
-    data["users"].append(user_id)
-    instance.update({"users": data, "updated_at": now})
-
-    instance = db.query(models.User).filter(models.User.id == user_id)
-    data = instance.first().blogs
-    if blog_id in data["blogs"]:
-        raise AlreadyBookmarkedBlog(user_id=user_id, blog_id=blog_id)
-    data["blogs"].append(blog_id)
-    instance.update({"blogs": data, "updated_at": now})
-
+    db_bookmark = models.Bookmark(
+        id=user_id + blog_id,
+        user=user_id,
+        blog=blog_id,
+        created_at=now,
+        updated_at=now,
+    )
+    db.add(db_bookmark)
     db.commit()
+    db.refresh(db_bookmark)
 
-    return instance.first()
+    return db_bookmark
 
 
 def delete_bookmark_blog(db: Session, user_id: str, blog_id: str):
-    now = datetime.datetime.now()
-
-    instance = db.query(models.Blog).filter(models.Blog.id == blog_id)
-    data = instance.first().users
-    if user_id not in data["users"]:
-        raise NotBookmarkedBlog(user_id=user_id, blog_id=blog_id)
-    data["users"].remove(user_id)
-    instance.update({"users": data, "updated_at": now})
-
-    instance = db.query(models.User).filter(models.User.id == user_id)
-    data = instance.first().blogs
-    if blog_id not in data["blogs"]:
-        raise NotBookmarkedBlog(user_id=user_id, blog_id=blog_id)
-    data["blogs"].remove(blog_id)
-    instance.update({"blogs": data, "updated_at": now})
-
+    db_bookmark = db.query(models.Bookmark).filter(
+        models.Bookmark.user == user_id, models.Bookmark.blog == blog_id)
+    if db_bookmark.first() == None:
+        raise NotFoundBookmark(user_id=user_id, blog_id=blog_id)
+    db_bookmark.delete()
     db.commit()
 
-    return instance.first()
+    return db_bookmark.first()
 
 
 def get_archive_by_id(db: Session, user_id: str) -> dict:
-    db_user = get_user_by_id(db, user_id=user_id)
-    return db_user.archive
+    db_bookmarked_blogs = db.query(models.Bookmark).filter(
+        models.Bookmark.user == user_id)
+    bookmarked_blogs = [
+        bookmark.blog for bookmark in db_bookmarked_blogs.all()]
+    db_posts = db.query(models.Post).filter(
+        models.Post.user.in_(bookmarked_blogs)).all()
+    return db_posts
+
+
+def is_bookmarked(db: Session, user_id: str, blog_id: str):
+    db_bookmarked_blogs = db.query(models.Bookmark).filter(
+        models.Bookmark.user == user_id, models.Bookmark.blog == blog_id)
+
+    return db_bookmarked_blogs.first() != None

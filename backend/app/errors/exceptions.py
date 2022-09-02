@@ -39,3 +39,11 @@ class AlreadyRegistedUser(HTTPException):
             status_code=405,
             detail=f"User ID : {user_id} Is Already Registed",
         )
+
+
+class NotFoundBookmark(HTTPException):
+    def __init__(self, user_id: str = None, blog_id: str = None):
+        super().__init__(
+            status_code=405,
+            detail=f"User ID : {user_id} Is not bookmark Blog ID : {blog_id}",
+        )

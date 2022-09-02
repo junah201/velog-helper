@@ -62,4 +62,5 @@ function add_bookmark_button() {
 console.log(document.querySelector(".bookmark-button"));
 if (document.querySelector(".bookmark-button") == null) {
   add_bookmark_button();
+  console.log("SUCCES add bookmark button");
 }

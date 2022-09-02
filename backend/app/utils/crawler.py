@@ -26,6 +26,24 @@ query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
 }
 """
 
+query = """
+query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
+    posts(cursor: $cursor, username: $username, temp_only: $temp_only, limit: $limit) {
+        id
+        title
+        user {
+        username
+        profile {
+            thumbnail
+        }
+        }
+        url_slug
+        released_at
+        updated_at
+    }
+}
+"""
+
 
 async def get_new_posts(username: str, limit: int = 10):
     async with aiohttp.ClientSession() as session:

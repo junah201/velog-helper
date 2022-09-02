@@ -53,9 +53,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 async function onUpdated(tabId) {
   const tab = await chrome.tabs.get(tabId);
-  console.log(tab);
   if (tab.status == "complete" && /^http/.test(tab.url)) {
-    console.log(123132);
     chrome.scripting
       .insertCSS({
         target: { tabId: tab.id },
@@ -73,12 +71,16 @@ async function onUpdated(tabId) {
       })
       .catch((err) => console.log(err));
   }
-  // 개인 블로그 메인 페이지 라면?
+  // 개인 블로그 메인 페이지 혹은 포스트 페이지라면?
   if (
     tab.status == "complete" &&
     /^http/.test(tab.url) &&
+    tab.url != "https://velog.io/" &&
+    tab.url[17] === "@"
+    /*
     tab.url.split("/").slice(-1) != "" &&
     tab.url.split("/").length === 4
+    */
   ) {
     chrome.scripting
       .insertCSS({
@@ -155,10 +157,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         },
       })
         .then((response) => {
+          console.log(response);
           return response.json();
         })
         .then((data) => {
-          sendResponse({ message: "success", data: data.archive });
+          console.log(data);
+          sendResponse({ message: "success", data: data });
           return;
         });
     });

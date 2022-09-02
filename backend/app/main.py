@@ -82,10 +82,10 @@ async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_
 
 @app.get("/{user_id}/blogs", response_model=Dict)
 async def read_blogs_by_user(user_id: str, db: Session = Depends(get_db)):
-    return {"blogs": crud.get_blogs_by_user(db, user_id=user_id)}
+    return {"blogs": crud.get_bookmarked_blogs_by_user(db, user_id=user_id)}
 
 
-@app.post("/{user_id}/blog", response_model=schemas.User)
+@app.post("/{user_id}/blog", response_model=schemas.Bookmark)
 async def add_bookmark_blog(user_id: str, blog_id: str, db: Session = Depends(get_db)):
     return crud.add_bookmark_blog(db, user_id=user_id, blog_id=blog_id)
 
@@ -95,27 +95,26 @@ async def delete_bookmark_blog(user_id: str, blog_id: str, db: Session = Depends
     return crud.delete_bookmark_blog(db, user_id=user_id, blog_id=blog_id)
 
 
-@app.get("/{user_id}/archive", response_model=dict)
+@app.get("/{user_id}/archive", response_model=List[schemas.Post])
 async def read_archive(user_id: str, db: Session = Depends(get_db)):
     return crud.get_archive_by_id(db, user_id=user_id)
 
 
 @app.get("/{user_id}/is_bookmarked", response_model=dict)
 async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_id(db, user_id=user_id)
-    return {"is_bookmarked": blog_id in db_user.blogs["blogs"]}
+    return {"is_bookmarked": crud.is_bookmarked(db, user_id=user_id, blog_id=blog_id)}
 
 
 @app.on_event("startup")
-@repeat_every(seconds=60 * 2)  # 2 min
+@repeat_every(seconds=60 * 10)  # 2 min
 async def update_new_post() -> None:
     logger.info("update new post start")
+    print("update new post start")
     with sessionmaker.context_session() as db:
-        blogs = deepcopy(crud.get_blogs(db))
-    with sessionmaker.context_session() as db:
-        await tasks.update_new_post(db, blogs)
+        await tasks.update_new_post(db)
+    print("update new post done")
     logger.info("update new post done")
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=False)

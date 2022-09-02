@@ -106,4 +106,5 @@
   border-color: grey;
   margin: 5px;
   display: flex;
+  object-fit: fill;
 }

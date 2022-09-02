@@ -18,13 +18,13 @@ function createNoticeItems() {
         console.log(item);
         const itemDiv = createElement("div", { class: "notice-item" });
         const itemBlogImg = createElement("img", {
-          src: item.img,
+          src: item.user_img,
           class: "notice-blog-img",
         });
         const itemTitle = createElement("a", { href: item.link });
         itemTitle.innerHTML = item.title;
         const itemDate = createElement("div", {});
-        itemDate.innerHTML = item.date.substring(5, 10);
+        itemDate.innerHTML = item.created_at.substring(5, 10);
         itemDiv.append(itemBlogImg, itemTitle, itemDate);
         noticeItemsDiv.append(itemDiv);
       });
