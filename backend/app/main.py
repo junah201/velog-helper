@@ -95,8 +95,8 @@ async def delete_bookmark_blog(user_id: str, blog_id: str, db: Session = Depends
 
 
 @app.get("/{user_id}/archive", response_model=List[schemas.Post])
-async def read_archive(user_id: str, db: Session = Depends(get_db)):
-    return crud.get_archive_by_id(db, user_id=user_id)
+async def read_archive(user_id: str, skip: int = 0, limit: int = 15, db: Session = Depends(get_db)):
+    return crud.get_archive_by_id(db, user_id=user_id, skip=skip, limit=limit)
 
 
 @app.get("/{user_id}/is_bookmarked", response_model=dict)

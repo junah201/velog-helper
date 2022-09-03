@@ -103,13 +103,13 @@ def delete_bookmark_blog(db: Session, user_id: str, blog_id: str):
     return db_bookmark.first()
 
 
-def get_archive_by_id(db: Session, user_id: str) -> dict:
+def get_archive_by_id(db: Session, user_id: str, skip: int = 0, limit: int = 15) -> dict:
     db_bookmarked_blogs = db.query(models.Bookmark).filter(
         models.Bookmark.user == user_id)
     bookmarked_blogs = [
         bookmark.blog for bookmark in db_bookmarked_blogs.all()]
     db_posts = db.query(models.Post).filter(
-        models.Post.user.in_(bookmarked_blogs)).order_by(models.Post.updated_at.desc()).all()
+        models.Post.user.in_(bookmarked_blogs)).order_by(models.Post.updated_at.desc()).offset(skip).limit(limit).all()
     return db_posts
 
 
