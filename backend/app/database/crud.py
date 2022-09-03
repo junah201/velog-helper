@@ -109,7 +109,7 @@ def get_archive_by_id(db: Session, user_id: str) -> dict:
     bookmarked_blogs = [
         bookmark.blog for bookmark in db_bookmarked_blogs.all()]
     db_posts = db.query(models.Post).filter(
-        models.Post.user.in_(bookmarked_blogs)).all()
+        models.Post.user.in_(bookmarked_blogs)).order_by(models.Post.updated_at.desc()).all()
     return db_posts
 
 
