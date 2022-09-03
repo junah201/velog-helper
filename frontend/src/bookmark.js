@@ -19,7 +19,7 @@ function add_bookmark_button() {
       chrome.runtime.sendMessage(
         {
           message: "delete_bookmark",
-          payload: window.location.pathname.substring(2),
+          payload: window.location.pathname.split("/")[1].substring(1),
         },
         (response) => {
           if (response.message === "success") {
@@ -32,7 +32,7 @@ function add_bookmark_button() {
       chrome.runtime.sendMessage(
         {
           message: "add_bookmark",
-          payload: window.location.pathname.substring(2),
+          payload: window.location.pathname.split("/")[1].substring(1),
         },
         (response) => {
           if (response.message === "success") {
@@ -46,7 +46,7 @@ function add_bookmark_button() {
   chrome.runtime.sendMessage(
     {
       message: "is_bookmarked",
-      payload: window.location.pathname.substring(2),
+      payload: window.location.pathname.split("/")[1].substring(1),
     },
     (response) => {
       console.log(response.is_bookmarked);
