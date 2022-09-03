@@ -1,8 +1,6 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, func, JSON
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, DateTime, func, JSON
 
 from app.database.database import Base
-import json
 
 
 class BaseMixin:

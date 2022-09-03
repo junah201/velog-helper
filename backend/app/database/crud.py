@@ -1,18 +1,16 @@
 from sqlalchemy.orm import Session
 from app.database import models, schemas
+from app.utils import crawler
 import datetime
-
-import requests
-from bs4 import BeautifulSoup as bs
 
 from app.errors.exceptions import AlreadyBookmarkedBlog, NotFoundBlog, NotFoundUser, NotBookmarkedBlog, AlreadyRegistedUser, NotFoundBookmark
 
 
-def create_blog(db: Session, blog: schemas.BlogCreate):
+async def create_blog(db: Session, blog: schemas.BlogCreate):
     now = datetime.datetime.now()
     db_blog = models.Blog(
         id=blog.id,
-        profile_img=get_profile_img_by_id(id=blog.id),
+        profile_img=await crawler.get_user_profile(username=blog.id),
         created_at=now,
         updated_at=now,
         last_uploaded_at=datetime.date(2005, 2, 1)
@@ -72,19 +70,13 @@ def get_user_by_id(db: Session, user_id: str):
     return db_user
 
 
-def get_profile_img_by_id(id: str) -> str:
-    response = requests.get(f"https://velog.io/@{id}")
-    soup = bs(response.text, "html.parser")
-    element = soup.select_one('div > a > img')
-
-    if element == None:
-        raise NotFoundBlog(blog_id=id)
-
-    return element["src"]
-
-
-def add_bookmark_blog(db: Session, user_id: str, blog_id: str):
+async def add_bookmark_blog(db: Session, user_id: str, blog_id: str):
     now = datetime.datetime.now()
+
+    db_blog = db.query(models.Blog).filter(
+        models.Blog.id == blog_id).first()
+    if db_blog == None:
+        await create_blog(db, schemas.BlogBase(id=blog_id))
 
     db_bookmark = models.Bookmark(
         id=user_id + blog_id,

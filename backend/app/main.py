@@ -1,6 +1,6 @@
 
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.logger import logger
 from fastapi_utils.session import FastAPISessionMaker
@@ -10,7 +10,6 @@ from sqlalchemy.orm import Session
 
 import logging
 import datetime
-from copy import deepcopy
 from typing import List, Dict
 import uvicorn
 
@@ -87,7 +86,7 @@ async def read_blogs_by_user(user_id: str, db: Session = Depends(get_db)):
 
 @app.post("/{user_id}/blog", response_model=schemas.Bookmark)
 async def add_bookmark_blog(user_id: str, blog_id: str, db: Session = Depends(get_db)):
-    return crud.add_bookmark_blog(db, user_id=user_id, blog_id=blog_id)
+    return await crud.add_bookmark_blog(db, user_id=user_id, blog_id=blog_id)
 
 
 @app.delete("/{user_id}/blog")

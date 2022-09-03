@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy.orm import Session
-from app.database import models, schemas
+from app.database import models
 from app.utils.crawler import get_new_posts
 
 

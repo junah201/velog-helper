@@ -1,6 +1,5 @@
-from typing import List, Union, Dict
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class BlogBase(BaseModel):
