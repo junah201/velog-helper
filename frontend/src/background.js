@@ -63,7 +63,7 @@ async function onUpdated(tabId) {
         chrome.scripting
           .executeScript({
             target: { tabId: tab.id },
-            files: ["./src/notice.js"],
+            files: ["./src/util.js", "./src/notice.js"],
           })
           .then(() => {
             console.log("SUCCES add notice button");
@@ -91,7 +91,7 @@ async function onUpdated(tabId) {
         chrome.scripting
           .executeScript({
             target: { tabId: tab.id },
-            files: ["./src/bookmark.js"],
+            files: ["./src/util.js", "./src/bookmark.js"],
           })
           .then(() => {});
       })

@@ -14,16 +14,16 @@ function createNoticeItems() {
       message: "get_new_post",
     },
     (response) => {
-      response.data.reverse().forEach(function (item, index, array) {
+      response.data.forEach(function (item, index, array) {
         console.log(item);
         const itemDiv = createElement("div", { class: "notice-item" });
-        const itemBlogImg = createElement("img", {
-          src: item.user_img,
+        const itemBlogImg = createElement("div", {
+          style: `background-image: url(${item.user_img})`,
           class: "notice-blog-img",
         });
         const itemTitle = createElement("a", { href: item.link });
         itemTitle.innerHTML = item.title;
-        const itemDate = createElement("div", {});
+        const itemDate = createElement("div", { class: "notice-date" });
         itemDate.innerHTML = item.created_at.substring(5, 10);
         itemDiv.append(itemBlogImg, itemTitle, itemDate);
         noticeItemsDiv.append(itemDiv);

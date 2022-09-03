@@ -1,12 +1,10 @@
 .notice-button {
   fill: var(--text1);
-  background-color: inherit;
-  border: none;
 }
 
-.notice-button > svg {
-  fill: var(--text1);
-  background-color: inherit;
+.notice-button:hover {
+  border-radius: 50%;
+  background: var(--slight-layer);
 }
 
 .notice-menu-div {
@@ -15,18 +13,6 @@
   font-size: 18px;
   font-weight: bold;
   border-bottom: 2px solid var(--border4);
-}
-
-.noticeRefresh-button {
-  fill: var(--text1);
-  background-color: var(--bg-element1);
-  border: none;
-}
-
-.noticeRefresh-button > svg {
-  fill: var(--text1);
-  background-color: var(--bg-element1);
-  margin-left: 50px;
 }
 
 .notice-container {
@@ -64,7 +50,7 @@
   font-size: 14px;
   color: var(--text1);
 }
-.notice-item div {
+.notice-date {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -75,20 +61,13 @@
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
-  text-decoration: none;
   font-size: 14px;
   color: var(--text1);
 }
-    .notice-item a:visited {
-  text-decoration: none;
-}
-    .notice-item a:hover {
-  text-decoration: none;
-}
-    .notice-item a:focus {
-  text-decoration: none;
-}
-    .notice-item a:hover,
+.notice-date,
+.notice-item a:visited,
+.notice-item a:focus,
+.notice-item a:hover,
 .notice-item a:active {
   text-decoration: none;
 }
@@ -98,13 +77,10 @@
 }
 
 .notice-blog-img {
-  width: 10%;
-  height: 10%;
+  width: 40px;
+  height: 40px;
+  background-size: cover;
   border-radius: 70%;
-  border-style: solid;
-  border-width: 1px;
-  border-color: grey;
   margin: 5px;
-  display: flex;
-  object-fit: fill;
+  padding: 14px;
 }
