@@ -1,5 +1,9 @@
 # Velog Helper - Change Log
 
+# [v0.2.1.1](https://github.com/junah201/velog-helper/releases/tag/v0.2.1)
+
+- #16 더 이상 새 글 알림에서 글을 눌렀을 때 404 에러가 발생하지 않습니다.
+
 # [v0.2.1](https://github.com/junah201/velog-helper/releases/tag/v0.2.1)
 
 - #13 더 이상 블로그 명이 블로그명/series 블로즈명/about 와 같은 형식으로 중복 등록되지 않습니다.
