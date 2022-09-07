@@ -1,39 +1,39 @@
 {
-    "manifest_version": 3,
-    "name": "Velog Helper",
-    "version": "0.2.1",
-    "action": {
-        "default_popup": "./popup.html",
-        "default_icon": {
-            "16": "icons/icon16.png",
-            "48": "icons/icon48.png",
-            "64": "icons/icon64.png",
-            "128": "icons/icon128.png"
-        }
-    },
-    "description": "Velog를 확장된 기능과 함께 사용해보세요.",
-    "icons": {
-        "16": "icons/icon16.png",
-        "48": "icons/icon48.png",
-        "64": "icons/icon64.png",
-        "128": "icons/icon128.png"
-    },
-    "author": "junah201",
-    "background": {
-        "service_worker": "./src/background.js",
-        "type": "module"
-    },
-    "host_permissions": [
-        "https://velog.io/*",
-        "http://velog-helper.herokuapp.com/*"
-    ],
-    "permissions": [
-        "activeTab",
-        "tabs",
-        "storage",
-        "scripting",
-        "identity",
-        "identity.email"
-    ],
-    "short_name": "Velog Helper"
+	"manifest_version": 3,
+	"name": "Velog Helper",
+	"version": "0.2.1",
+	"action": {
+		"default_popup": "./popup.html",
+		"default_icon": {
+			"16": "icons/icon16.png",
+			"48": "icons/icon48.png",
+			"64": "icons/icon64.png",
+			"128": "icons/icon128.png"
+		}
+	},
+	"description": "Velog를 확장된 기능과 함께 사용해보세요.",
+	"icons": {
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"64": "icons/icon64.png",
+		"128": "icons/icon128.png"
+	},
+	"author": "junah201",
+	"background": {
+		"service_worker": "./src/background.js",
+		"type": "module"
+	},
+	"host_permissions": [
+		"https://velog.io/*",
+		"http://velog-helper.herokuapp.com/*"
+	],
+	"permissions": [
+		"activeTab",
+		"tabs",
+		"storage",
+		"scripting",
+		"identity",
+		"identity.email"
+	],
+	"short_name": "Velog Helper"
 }

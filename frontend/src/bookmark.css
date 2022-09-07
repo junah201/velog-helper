@@ -1,14 +1,14 @@
 .bookmark-button {
-  float: right;
-  background-color: var(--bg-page2);
-  border: none;
+	float: right;
+	background-color: var(--bg-page2);
+	border: none;
 }
 
 .bookmark-button > svg {
-  fill: var(--text3);
-  background-color: var(--bg-page2);
+	fill: var(--text3);
+	background-color: var(--bg-page2);
 }
 
 .yellow-bookmark-button > svg {
-  fill: yellow;
+	fill: yellow;
 }

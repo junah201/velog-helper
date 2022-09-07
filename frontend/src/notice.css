@@ -1,86 +1,86 @@
 .notice-button {
-  fill: var(--text1);
+	fill: var(--text1);
 }
 
 .notice-button:hover {
-  border-radius: 50%;
-  background: var(--slight-layer);
+	border-radius: 50%;
+	background: var(--slight-layer);
 }
 
 .notice-menu-div {
-  display: flex;
-  padding: 12px;
-  font-size: 18px;
-  font-weight: bold;
-  border-bottom: 2px solid var(--border4);
+	display: flex;
+	padding: 12px;
+	font-size: 18px;
+	font-weight: bold;
+	border-bottom: 2px solid var(--border4);
 }
 
 .notice-container {
-  width: 400px;
-  margin: 5px;
-  position: absolute;
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  top: 100%;
-  left: 0;
-  border: none;
-  z-index: 5;
-  background: var(--bg-element1);
-  box-shadow: rgb(0 0 0 / 10%) 0px 0px 8px;
+	width: 400px;
+	margin: 5px;
+	position: absolute;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	top: 100%;
+	left: 0;
+	border: none;
+	z-index: 5;
+	background: var(--bg-element1);
+	box-shadow: rgb(0 0 0 / 10%) 0px 0px 8px;
 }
 
 .notice-item {
-  display: flex;
-  border-bottom: 1px solid var(--border4);
+	display: flex;
+	border-bottom: 1px solid var(--border4);
 }
 
 .notice-item a {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-break: break-all;
-  padding: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-break: break-all;
+	padding: 12px;
 
-  width: 400px;
+	width: 400px;
 
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  text-decoration: none;
-  font-size: 14px;
-  color: var(--text1);
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-decoration: none;
+	font-size: 14px;
+	color: var(--text1);
 }
 .notice-date {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-break: break-all;
-  padding: 12px;
-  margin-right: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-break: break-all;
+	padding: 12px;
+	margin-right: 12px;
 
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  font-size: 14px;
-  color: var(--text1);
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	font-size: 14px;
+	color: var(--text1);
 }
 .notice-date,
 .notice-item a:visited,
 .notice-item a:focus,
 .notice-item a:hover,
 .notice-item a:active {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 .undisplay {
-  display: none;
+	display: none;
 }
 
 .notice-blog-img {
-  width: 40px;
-  height: 40px;
-  background-size: cover;
-  border-radius: 70%;
-  margin: 5px;
-  padding: 14px;
+	width: 40px;
+	height: 40px;
+	background-size: cover;
+	border-radius: 70%;
+	margin: 5px;
+	padding: 14px;
 }
