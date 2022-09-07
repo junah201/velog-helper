@@ -21,7 +21,9 @@ function createNoticeItems() {
 					style: `background-image: url(${item.user_img})`,
 					class: "notice-blog-img",
 				});
-				const itemTitle = createElement("a", { href: item.link });
+				const itemTitle = createElement("a", {
+					href: `@${item.user}/${item.link}`,
+				});
 				itemTitle.innerHTML = item.title;
 				const itemDate = createElement("div", { class: "notice-date" });
 				itemDate.innerHTML = item.created_at.substring(5, 10);
