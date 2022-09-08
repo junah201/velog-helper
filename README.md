@@ -33,6 +33,10 @@
 2. `Velog Helper`를 검색한다.
 3. Velog Helper를 설치한다.
 
+# 관련 문서
+
+- [개인정보처리방침](https://junah.notion.site/e297108af58744809dd6b9f1db49efe0)
+
 # 개발 예정 (TO DO)
 
 ## 확장 프로그램 설치 시 튜토리얼 탭
