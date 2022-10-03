@@ -1,23 +1,29 @@
 from sqlalchemy.orm import Session
 from app.database import models, schemas
 from app.utils import crawler
+from app.tasks.tasks import update_new_post_by_blog
 import datetime
 
 from app.errors.exceptions import AlreadyBookmarkedBlog, NotFoundBlog, NotFoundUser, NotBookmarkedBlog, AlreadyRegistedUser, NotFoundBookmark
 
 
 async def create_blog(db: Session, blog: schemas.BlogCreate):
+    # 블로그 생성
     now = datetime.datetime.now()
     db_blog = models.Blog(
         id=blog.id,
         profile_img=await crawler.get_user_profile(username=blog.id),
         created_at=now,
         updated_at=now,
-        last_uploaded_at=datetime.date(2005, 2, 1)
+        last_uploaded_at=now
     )
     db.add(db_blog)
     db.commit()
     db.refresh(db_blog)
+
+    # 새 글 목록 추가
+    await update_new_post_by_blog(db, db_blog, limit=25, is_init=True)
+
     return db_blog
 
 

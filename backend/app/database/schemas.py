@@ -45,7 +45,7 @@ class PostBase(BaseModel):
     link: str
 
 
-class PostCreate(UserBase):
+class PostCreate(PostBase):
     pass
 
 

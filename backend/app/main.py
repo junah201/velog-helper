@@ -15,6 +15,7 @@ from app.database import models, schemas, crud
 from app.database.database import SessionLocal, engine
 from app.common.config import SQLALCHEMY_DATABASE_URL
 from app.tasks import tasks
+from app.utils import mail
 
 logger.setLevel(logging.INFO)
 
@@ -102,9 +103,21 @@ async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db
     return {"is_bookmarked": crud.is_bookmarked(db, user_id=user_id, blog_id=blog_id)}
 
 
+@app.get("/email", response_model=dict)
+async def email(db: Session = Depends(get_db)):
+    post = db.query(models.Post).limit(1).first()
+    print(post)
+    mail.send_post_notice_email(
+        receiver_address="junah.dev@gmail.com",
+        post=post
+    )
+    return {}
+
+
 @app.on_event("startup")
 @repeat_every(seconds=60 * 10)  # 2 min
 async def update_new_post() -> None:
+    return
     logger.info("update new post start")
     print("update new post start")
     with sessionmaker.context_session() as db:
