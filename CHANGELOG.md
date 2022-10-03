@@ -1,6 +1,10 @@
 # Velog Helper - Change Log
 
-# [v0.2.1.1](https://github.com/junah201/velog-helper/releases/tag/v0.2.1)
+# [v0.2.1.2](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.2)
+
+- #18 더 이상 새 글 알림에서 글을 눌렀을 때 404 에러가 발생하지 않습니다.
+
+# [v0.2.1.1](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.1)
 
 - #16 더 이상 새 글 알림에서 글을 눌렀을 때 404 에러가 발생하지 않습니다.
 
