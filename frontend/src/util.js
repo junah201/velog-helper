@@ -22,7 +22,7 @@ function createNoticeItems() {
 					class: "notice-blog-img",
 				});
 				const itemTitle = createElement("a", {
-					href: `@${item.user}/${item.link}`,
+					href: `https://velog.io/@${item.user}/${item.link}`,
 				});
 				itemTitle.innerHTML = item.title;
 				const itemDate = createElement("div", { class: "notice-date" });
