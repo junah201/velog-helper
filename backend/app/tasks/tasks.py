@@ -35,7 +35,16 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
         db.refresh(db_post)
 
         # TODO : 유저별로 이메일 전송 코드 작성
-        # send_post_notice_email(receiver_address="junah.dev@gmail.com", post=db_post)
+        db_users = db.query(models.Bookmark).filter(
+            models.Bookmark.blog == db_post.user).all()
+        print(db_users)
+        for bookmarked_user in db_users:
+            print(bookmarked_user)
+            if bookmarked_user.email == None or bookmarked_user.email == "":
+                continue
+            print(1)
+            send_post_notice_email(
+                receiver_address=bookmarked_user.email, post=db_post)
 
     db.query(models.Blog).filter(
         models.Blog.id == blog.id).update(
