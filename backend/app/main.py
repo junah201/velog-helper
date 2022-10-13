@@ -103,7 +103,7 @@ async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db
 
 
 @app.on_event("startup")
-@repeat_every(seconds=60 * 10)  # 2 min
+@repeat_every(seconds=60 * 10)  # 10 min
 async def update_new_post() -> None:
     logger.info("update new post start")
     print("update new post start")
