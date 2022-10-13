@@ -2,6 +2,7 @@ import datetime
 from sqlalchemy.orm import Session
 from app.database import models
 from app.utils.crawler import get_new_posts
+from app.common.consts import VELOG_DEFAULT_PROFILE_IMG
 
 
 async def update_new_post(db: Session) -> None:
@@ -22,7 +23,7 @@ async def update_new_post(db: Session) -> None:
                 id=post["id"],
                 title=post["title"],
                 user=post["user"]["username"],
-                user_img=post["user"]["profile"]["thumbnail"],
+                user_img=post["user"]["profile"]["thumbnail"] if post["user"]["profile"]["thumbnail"] else VELOG_DEFAULT_PROFILE_IMG,
                 link=post["url_slug"],
                 created_at=post_upload_time,
                 updated_at=datetime.datetime.strptime(

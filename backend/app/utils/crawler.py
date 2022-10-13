@@ -1,5 +1,5 @@
 import aiohttp
-from app.common.consts import VELOG_API_URL
+from app.common.consts import VELOG_API_URL, VELOG_DEFAULT_PROFILE_IMG
 
 get_new_posts_query = """
 query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
@@ -44,4 +44,6 @@ async def get_user_profile(username: str):
         async with session.post(VELOG_API_URL, json={"query": get_user_profile_query, "variables": {"username": username}}) as resp:
             assert resp.status == 200
             data = await resp.json()
+            if data["data"]["user"]["profile"]["thumbnail"] == None:
+                return VELOG_DEFAULT_PROFILE_IMG
             return data["data"]["user"]["profile"]["thumbnail"]

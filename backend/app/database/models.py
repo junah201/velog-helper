@@ -19,7 +19,7 @@ class User(Base, BaseMixin):
 class Blog(Base, BaseMixin):
     __tablename__ = "blogs"
 
-    profile_img = Column(String)
+    profile_img = Column(String, nullable=False)
     last_uploaded_at = Column(DateTime, nullable=False,
                               default=func.utc_timestamp(), onupdate=func.utc_timestamp())
 
