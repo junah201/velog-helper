@@ -1,5 +1,10 @@
 # Velog Helper - Change Log
 
+# [v0.2.1.3](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.3)
+
+- #19 더 이상 새 글 알림 링크가 현재 링크를 기준으로 이동하지 않습니다.
+- #20 블로그 이미지가 기본 이미지 일 때 이미지를 가져오지 못하는 버그를 수정하였습니다.
+
 # [v0.2.1.2](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.2)
 
 - #18 더 이상 새 글 알림에서 글을 눌렀을 때 404 에러가 발생하지 않습니다.
