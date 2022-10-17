@@ -31,8 +31,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+is_task_runing = False
 
 # Dependency
+
+
 def get_db():
     db = SessionLocal()
     try:
@@ -102,13 +105,18 @@ async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db
     return {"is_bookmarked": crud.is_bookmarked(db, user_id=user_id, blog_id=blog_id)}
 
 
-@app.put("/subscription/{user_id}", response_model=schemas.User)
+@app.get("/subscription/{user_id}")
 async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depends(get_db)):
-    return crud.set_subscription(db, user_id=user_id, is_subscription=is_subscribe)
+    result = crud.set_subscription(
+        db, user_id=user_id, is_subscription=is_subscribe)
+    if result.is_subscribed:
+        return "You are subscribed"
+    else:
+        return "You are unsubscribed"
 
 
 @app.on_event("startup")
-@repeat_every(seconds=60 * 10)  # 10 min
+@repeat_every(seconds=60 * 15)  # 15 min
 async def update_new_post() -> None:
     logger.info("update new post start")
     print("update new post start")

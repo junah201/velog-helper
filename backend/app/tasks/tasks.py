@@ -14,9 +14,12 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
         last_uploaded_at = datetime.datetime.strptime(
             posts[0]["released_at"][:19], "%Y-%m-%dT%H:%M:%S")
     for post in reversed(posts):
-        post_upload_time = datetime.datetime.strptime(
+        post_uploaded_at = datetime.datetime.strptime(
             post["released_at"][:19], "%Y-%m-%dT%H:%M:%S")
-        if post_upload_time <= blog.last_uploaded_at:
+        if post_uploaded_at <= blog.last_uploaded_at:
+            continue
+
+        if not db.query(models.Post).filter(models.Post.id == post["id"]).first():
             continue
 
         # DB에 추가
@@ -26,7 +29,7 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
             user=post["user"]["username"],
             user_img=post["user"]["profile"]["thumbnail"],
             link=post["url_slug"],
-            created_at=post_upload_time,
+            created_at=post_uploaded_at,
             updated_at=datetime.datetime.strptime(
                 post["updated_at"][:19], "%Y-%m-%dT%H:%M:%S"),
         )
@@ -54,7 +57,7 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
                 user=post["user"]["username"],
                 user_img=post["user"]["profile"]["thumbnail"] if post["user"]["profile"]["thumbnail"] else VELOG_DEFAULT_PROFILE_IMG,
                 link=post["url_slug"],
-                created_at=post_upload_time,
+                created_at=post_uploaded_at,
                 updated_at=datetime.datetime.strptime(
                     post["updated_at"][:19], "%Y-%m-%dT%H:%M:%S"),
             )
