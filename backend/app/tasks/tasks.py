@@ -34,17 +34,21 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
         db.commit()
         db.refresh(db_post)
 
-        # TODO : 유저별로 이메일 전송 코드 작성
+        # TODO : 버그가 있을 것을 예상되는 지점이므로 추후에 수정 필요
+
         db_users = db.query(models.Bookmark).filter(
             models.Bookmark.blog == db_post.user).all()
-        print(db_users)
+
         for bookmarked_user in db_users:
-            print(bookmarked_user)
-            if bookmarked_user.email == None or bookmarked_user.email == "":
+            db_user = db.query(models.User).filter(
+                models.User.id == bookmarked_user.user).first()
+            if not db_user.email:
                 continue
-            print(1)
+
+            # TODO : 이메일 수신 전 수신 거부 처리 확인해야 함
+
             send_post_notice_email(
-                receiver_address=bookmarked_user.email, post=db_post)
+                receiver_address=db_user.email, post=db_post)
 
     db.query(models.Blog).filter(
         models.Blog.id == blog.id).update(
