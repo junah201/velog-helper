@@ -30,6 +30,7 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
+    is_subscribed: bool
     created_at: datetime
     updated_at: datetime
 
@@ -45,7 +46,7 @@ class PostBase(BaseModel):
     link: str
 
 
-class PostCreate(UserBase):
+class PostCreate(PostBase):
     pass
 
 

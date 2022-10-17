@@ -1,23 +1,29 @@
 from sqlalchemy.orm import Session
 from app.database import models, schemas
 from app.utils import crawler
+from app.tasks.tasks import update_new_post_by_blog
 import datetime
 
 from app.errors.exceptions import AlreadyBookmarkedBlog, NotFoundBlog, NotFoundUser, NotBookmarkedBlog, AlreadyRegistedUser, NotFoundBookmark
 
 
 async def create_blog(db: Session, blog: schemas.BlogCreate):
+    # 블로그 생성
     now = datetime.datetime.now()
     db_blog = models.Blog(
         id=blog.id,
         profile_img=await crawler.get_user_profile(username=blog.id),
         created_at=now,
         updated_at=now,
-        last_uploaded_at=datetime.date(2005, 2, 1)
+        last_uploaded_at=now
     )
     db.add(db_blog)
     db.commit()
     db.refresh(db_blog)
+
+    # 새 글 목록 추가
+    await update_new_post_by_blog(db, db_blog, limit=25, is_init=True)
+
     return db_blog
 
 
@@ -49,6 +55,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     db_user = models.User(
         id=user.id,
         email=user.email,
+        is_subscribed=True,
         created_at=now,
         updated_at=now,
     )
@@ -118,3 +125,13 @@ def is_bookmarked(db: Session, user_id: str, blog_id: str):
         models.Bookmark.user == user_id, models.Bookmark.blog == blog_id)
 
     return db_bookmarked_blogs.first() != None
+
+
+def set_subscription(db: Session, user_id: str, is_subscription: bool):
+    db_user = get_user_by_id(db, user_id=user_id)
+    db_user.is_subscribed = is_subscription
+    print(db_user)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
