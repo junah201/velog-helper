@@ -30,6 +30,7 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
+    is_subscribed: bool
     created_at: datetime
     updated_at: datetime
 

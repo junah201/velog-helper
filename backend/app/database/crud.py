@@ -55,6 +55,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     db_user = models.User(
         id=user.id,
         email=user.email,
+        is_subscribed=True,
         created_at=now,
         updated_at=now,
     )
@@ -124,3 +125,13 @@ def is_bookmarked(db: Session, user_id: str, blog_id: str):
         models.Bookmark.user == user_id, models.Bookmark.blog == blog_id)
 
     return db_bookmarked_blogs.first() != None
+
+
+def set_subscription(db: Session, user_id: str, is_subscription: bool):
+    db_user = get_user_by_id(db, user_id=user_id)
+    db_user.is_subscribed = is_subscription
+    print(db_user)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user

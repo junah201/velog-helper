@@ -102,8 +102,13 @@ async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db
     return {"is_bookmarked": crud.is_bookmarked(db, user_id=user_id, blog_id=blog_id)}
 
 
+@app.put("/subscription/{user_id}", response_model=schemas.User)
+async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depends(get_db)):
+    return crud.set_subscription(db, user_id=user_id, is_subscription=is_subscribe)
+
+
 @app.on_event("startup")
-@repeat_every(seconds=60 * 2)  # 20 min
+@repeat_every(seconds=60 * 20)  # 20 min
 async def update_new_post() -> None:
     logger.info("update new post start")
     print("update new post start")

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, DateTime, func, JSON
+from sqlalchemy import Column, String, DateTime, func, Boolean
 
 from app.database.database import Base
 
@@ -14,6 +14,7 @@ class User(Base, BaseMixin):
     __tablename__ = "users"
 
     email = Column(String, nullable=True)
+    is_subscribed = Column(Boolean, nullable=False)
 
 
 class Blog(Base, BaseMixin):

@@ -47,8 +47,9 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
 
             # TODO : 이메일 수신 전 수신 거부 처리 확인해야 함
 
-            send_post_notice_email(
-                receiver_address=db_user.email, post=db_post)
+            if db_user.is_subscribed:
+                send_post_notice_email(
+                    receiver_address=db_user.email, post=db_post, user_id=db_user.id)
 
     db.query(models.Blog).filter(
         models.Blog.id == blog.id).update(
