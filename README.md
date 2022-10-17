@@ -35,7 +35,8 @@
 
 # 실행 방법
 
-```cd .\backend\
+```
+cd .\backend\
 uvicorn app.main:app --reload
 ```
 
