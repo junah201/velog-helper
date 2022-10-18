@@ -12,10 +12,10 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
         last_uploaded_at = datetime.datetime(2005, 2, 1)
     else:
         last_uploaded_at = datetime.datetime.strptime(
-            posts[0]["released_at"][:19], "%Y-%m-%dT%H:%M:%S")
+            posts[0]["released_at"][:19], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=9)
     for post in reversed(posts):
         post_uploaded_at = datetime.datetime.strptime(
-            post["released_at"][:19], "%Y-%m-%dT%H:%M:%S")
+            post["released_at"][:19], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=9)
         if post_uploaded_at <= blog.last_uploaded_at:
             continue
 
@@ -31,7 +31,7 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
             link=post["url_slug"],
             created_at=post_uploaded_at,
             updated_at=datetime.datetime.strptime(
-                post["updated_at"][:19], "%Y-%m-%dT%H:%M:%S"),
+                post["updated_at"][:19], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=9),
         )
 
         db.add(db_post)
@@ -49,18 +49,6 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
             if not db_user.email:
                 continue
 
-            # TODO : 이메일 수신 전 수신 거부 처리 확인해야 함
-
-            db_post = models.Post(
-                id=post["id"],
-                title=post["title"],
-                user=post["user"]["username"],
-                user_img=post["user"]["profile"]["thumbnail"] if post["user"]["profile"]["thumbnail"] else VELOG_DEFAULT_PROFILE_IMG,
-                link=post["url_slug"],
-                created_at=post_uploaded_at,
-                updated_at=datetime.datetime.strptime(
-                    post["updated_at"][:19], "%Y-%m-%dT%H:%M:%S"),
-            )
             if db_user.is_subscribed:
                 send_post_notice_email(
                     receiver_address=db_user.email, post=db_post, user_id=db_user.id)

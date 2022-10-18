@@ -107,9 +107,8 @@ async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db
 
 @app.get("/subscription/{user_id}")
 async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depends(get_db)):
-    result = crud.set_subscription(
-        db, user_id=user_id, is_subscription=is_subscribe)
-    if result.is_subscribed:
+    crud.set_subscription(db, user_id=user_id, is_subscription=is_subscribe)
+    if is_subscribe:
         return "You are subscribed"
     else:
         return "You are unsubscribed"

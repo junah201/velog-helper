@@ -127,11 +127,8 @@ def is_bookmarked(db: Session, user_id: str, blog_id: str):
     return db_bookmarked_blogs.first() != None
 
 
-def set_subscription(db: Session, user_id: str, is_subscription: bool):
-    db_user = get_user_by_id(db, user_id=user_id)
-    db_user.is_subscribed = is_subscription
-    print(db_user)
-    db.add(db_user)
+def set_subscription(db: Session, user_id: str, is_subscription: bool) -> None:
+    db.query(models.User).filter(
+        models.User.id == user_id).update(
+            {"is_subscribed": is_subscription, "updated_at": str(datetime.datetime.now())})
     db.commit()
-    db.refresh(db_user)
-    return db_user
