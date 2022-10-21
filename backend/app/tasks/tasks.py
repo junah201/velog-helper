@@ -19,7 +19,7 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
         if post_uploaded_at <= blog.last_uploaded_at:
             continue
 
-        if not db.query(models.Post).filter(models.Post.id == post["id"]).first():
+        if db.query(models.Post).filter(models.Post.id == post["id"]).first():
             continue
 
         # DB에 추가
