@@ -1,5 +1,9 @@
 # Velog Helper - Change Log
 
+# [v0.2.1.4](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.4)
+
+- #18 팝업창에서 새 글 알림 링크가 정상적으로 이동하지 못하는 버그를 수정하였습니다.
+
 # [v0.2.1.3](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.3)
 
 - #19 더 이상 새 글 알림 링크가 현재 링크를 기준으로 이동하지 않습니다.
