@@ -1,0 +1,6 @@
+import os
+
+SQLALCHEMY_DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URL")
+MAIL_SENDER = os.environ.get("MAIL_SENDER")
+MAIL_PASSWARD = os.environ.get("MAIL_PASSWARD")
+BACKEND_SERVER_URL = os.environ.get("BACKEND_SERVER_URL")
