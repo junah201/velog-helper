@@ -12,11 +12,6 @@ function add_bookmark_button() {
 				{
 					message: "delete_bookmark",
 					payload: window.location.pathname.split("/")[1].substring(1),
-				},
-				(response) => {
-					if (response.message === "success") {
-						console.log("success delete bookmark");
-					}
 				}
 			);
 		} else {
@@ -25,11 +20,6 @@ function add_bookmark_button() {
 				{
 					message: "add_bookmark",
 					payload: window.location.pathname.split("/")[1].substring(1),
-				},
-				(response) => {
-					if (response.message === "success") {
-						console.log("success add bookmark");
-					}
 				}
 			);
 		}
