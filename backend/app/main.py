@@ -31,8 +31,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-is_task_runing = False
-
 # Dependency
 
 

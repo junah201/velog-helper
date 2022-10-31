@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Velog-Helper</title>
+		<style>
+			html {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			.outer-container {
+				background-color: #21c998;
+				margin: 0;
+				padding: 2rem;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+			}
+			.inner-container {
+				display: inline-block;
+				background-color: #ffffff;
+				margin: 0;
+				padding: 0;
+				width: 80%;
+				height: 100%;
+			}
+			h1 {
+				margin: 0.5rem;
+			}
+			.hyperlink {
+				background-color: #808080;
+				color: #ffffff;
+				padding: 0.5rem 1rem 0.5rem 1rem;
+				margin: 1.5rem;
+			}
+			.unsubscribe {
+				background-color: #f05650;
+				color: #ffffff;
+				padding: 0.5rem 1rem 0.5rem 1rem;
+				margin: 1.5rem;
+			}
+			a {
+				text-decoration: none;
+				color: #ffffff;
+			}
+			a:link {
+				text-decoration: none;
+				color: #ffffff;
+			}
+			a:visited {
+				text-decoration: none;
+				color: #ffffff;
+			}
+			a:hover {
+				text-decoration: none;
+				color: #ffffff;
+			}
+			a:active {
+				text-decoration: none;
+				color: #ffffff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="outer-container">
+			<div class="inner-container">
+				<h1>{{ title }}</h1>
+				<hr />
+				<p>
+					<a href="https://velog.io/@{{ user }}">{{ user }}님</a>의 새 포스트가
+					업로드되었습니다.
+				</p>
+				<br />
+				<div class="link-container">
+					<a class="hyperlink" href="https://velog.io/@{{ user }}/{{ link }}"
+						>바로가기</a
+					>
+					<a
+						class="unsubscribe"
+						href="{{ BACKEND_SERVER_URL }}/subscription/{{ user_id }}?is_subscribe=false"
+						>수신거부</a
+					>
+				</div>
+				<br />
+				<br />
+			</div>
+		</div>
+	</body>
+</html>
