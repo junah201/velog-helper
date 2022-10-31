@@ -20,7 +20,7 @@ class User(Base, BaseMixin):
 class Blog(Base, BaseMixin):
     __tablename__ = "blogs"
 
-    profile_img = Column(String(100), nullable=False)
+    profile_img = Column(String(200), nullable=False)
     last_uploaded_at = Column(DateTime, nullable=False,
                               default=func.utc_timestamp(), onupdate=func.utc_timestamp())
 
@@ -30,7 +30,7 @@ class Post(Base, BaseMixin):
 
     title = Column(String(100), nullable=False)
     user = Column(String(100), nullable=False)
-    user_img = Column(String(100), nullable=False)
+    user_img = Column(String(200), nullable=False)
     link = Column(String(100), nullable=False)
 
 
