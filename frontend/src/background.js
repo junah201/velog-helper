@@ -13,7 +13,7 @@ function registUser() {
 				id: data.user_id,
 				email: data.user_email,
 			}),
-		}).then((response) => console.log(response));
+		});
 	});
 }
 
@@ -65,9 +65,6 @@ async function onUpdated(tabId) {
 						target: { tabId: tab.id },
 						files: ["./src/util.js", "./src/notice.js"],
 					})
-					.then(() => {
-						console.log("SUCCES add notice button");
-					});
 			})
 			.catch((err) => console.log(err));
 	}
@@ -157,11 +154,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				},
 			})
 				.then((response) => {
-					console.log(response);
 					return response.json();
 				})
 				.then((data) => {
-					console.log(data);
 					sendResponse({ message: "success", data: data });
 					return;
 				});
@@ -199,11 +194,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				},
 			})
 				.then((response) => {
-					console.log(response);
 					return response.json();
 				})
 				.then((data) => {
-					console.log(data);
 					sendResponse({
 						message: "success",
 						blogs: data.blogs,
