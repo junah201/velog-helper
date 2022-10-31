@@ -27,9 +27,17 @@
 
 # 실행 방법
 
+PR을 위한 백엔드 실행 방법
 ```
+pip install -r requirements.txt
 cd .\backend\
 uvicorn app.main:app --reload
+```
+
+PR을 위한 프론트엔드 실행 방법
+```
+크롬확장프로그램 개발자 모드를 킨다.
+`압축 해제된 확장프로그램을 로드합니다.`에서 velog-helper/frontend 폴더를 선택한다.
 ```
 
 # 관련 문서
