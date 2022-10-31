@@ -22,16 +22,8 @@
 
 # 설치 방법
 
-- 일반적인 방법
-
 1. [Velog Helper](https://chrome.google.com/webstore/detail/velog-helper/limdbpmjjehbmlnmkmaadbkklkmohbag?hl=ko)에 들어간다.
 2. 설치한다.
-
-- 대안책
-
-1. [크롬 확장 프로그램 스토어](https://chrome.google.com/webstore/category/extensions?hl=ko)에 접속한다.
-2. `Velog Helper`를 검색한다.
-3. Velog Helper를 설치한다.
 
 # 실행 방법
 
