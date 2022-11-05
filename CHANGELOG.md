@@ -1,5 +1,10 @@
 # Velog Helper - Change Log
 
+# [v0.2.1.5](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.5)
+
+- 이제 웨일 브라우저에서도 velog-helper를 사용할 수 있습니다.
+- 사용자가 새 글 알림을 받을 수 있는 email을 popup에서 수정할 수 있습니다.
+
 # [v0.2.1.4](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.4)
 
 - #18 팝업창에서 새 글 알림 링크가 정상적으로 이동하지 못하는 버그를 수정하였습니다.
