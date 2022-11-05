@@ -2,8 +2,18 @@ const Constants = {
 	BACKEND_URL: "https://velog-helper.herokuapp.com",
 };
 
+globalThis.browser = (function () {
+	return (
+		globalThis.msBrowser ||
+		globalThis.browser ||
+		globalThis.chrome ||
+		globalThis.whale
+	);
+})();
+
 function registUser() {
-	chrome.storage.local.get(["user_id", "user_email"], (data) => {
+	browser.storage.local.get(["user_id", "user_email"], (data) => {
+		console.log(data.user_id, data.user_email);
 		fetch(`${Constants.BACKEND_URL}/user`, {
 			method: "POST",
 			headers: {
@@ -17,54 +27,73 @@ function registUser() {
 	});
 }
 
-chrome.runtime.onInstalled.addListener(() => {
-	chrome.identity.getProfileUserInfo(function (userInfo) {
-		// 로그인 되어 있지 않은 유저일 경우 -> 타임스템프와 IP를 임시 아이디로 지정
-		// TODO : 임시 아이디를 만드는 과정에서 해쉬 등 암호화 과정이 필요함
-		if (userInfo.email === "") {
-			fetch("https://api.ipify.org?format=json", {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-				.then((response) => {
-					return response.json();
+browser.runtime.onInstalled.addListener(() => {
+	// whale 브라우저에서는 identity api 지원 중단으로 인해 예외처리 필요
+	if (!globalThis.whale) {
+		browser.identity.getProfileUserInfo(function (userInfo) {
+			// TODO : 임시 아이디를 만드는 과정에서 해쉬 등 암호화 과정이 필요함
+			// 로그인 되어 있지 않은 유저일 경우 -> 타임스템프와 IP를 임시 아이디로 지정
+			if (userInfo.email === "") {
+				fetch("https://api.ipify.org?format=json", {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+					},
 				})
-				.then((data) => {
-					chrome.storage.local.set({
-						user_id: "" + new Date().getTime() + data.ip,
+					.then((response) => {
+						return response.json();
+					})
+					.then((data) => {
+						browser.storage.local.set({
+							user_id: "" + new Date().getTime() + data.ip,
+							user_email: userInfo.email,
+						});
+					})
+					.then(registUser);
+			}
+			// 로그인 되어 있는 유저 일 경우 -> 크롬 아이디 이용
+			else {
+				browser.storage.local
+					.set({
+						user_id: userInfo.id,
 						user_email: userInfo.email,
-					});
-				})
-				.then(registUser);
-		}
-		// 로그인 되어 있는 유저 일 경우 -> 크롬 아이디 이용
-		else {
-			chrome.storage.local
-				.set({
-					user_id: userInfo.id,
-					user_email: userInfo.email,
-				})
-				.then(registUser);
-		}
-	});
+					})
+					.then(registUser);
+			}
+		});
+	} else {
+		fetch("https://api.ipify.org?format=json", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				browser.storage.local.set({
+					user_id: "" + new Date().getTime() + data.ip,
+					user_email: "",
+				});
+			})
+			.then(registUser);
+	}
 });
 
 async function onUpdated(tabId) {
-	const tab = await chrome.tabs.get(tabId);
+	const tab = await browser.tabs.get(tabId);
 	if (tab.status == "complete" && /^http/.test(tab.url)) {
-		chrome.scripting
+		browser.scripting
 			.insertCSS({
 				target: { tabId: tab.id },
 				files: ["./src/notice.css"],
 			})
 			.then(() => {
-				chrome.scripting
-					.executeScript({
-						target: { tabId: tab.id },
-						files: ["./src/util.js", "./src/notice.js"],
-					})
+				browser.scripting.executeScript({
+					target: { tabId: tab.id },
+					files: ["./src/util.js", "./src/notice.js"],
+				});
 			})
 			.catch((err) => console.log(err));
 	}
@@ -79,13 +108,13 @@ async function onUpdated(tabId) {
     tab.url.split("/").length === 4
     */
 	) {
-		chrome.scripting
+		browser.scripting
 			.insertCSS({
 				target: { tabId: tab.id },
 				files: ["./src/bookmark.css"],
 			})
 			.then(() => {
-				chrome.scripting
+				browser.scripting
 					.executeScript({
 						target: { tabId: tab.id },
 						files: ["./src/util.js", "./src/bookmark.js"],
@@ -96,17 +125,17 @@ async function onUpdated(tabId) {
 	}
 }
 
-chrome.tabs.onUpdated.addListener(async (tabID, changeInfo, tab) => {
+browser.tabs.onUpdated.addListener(async (tabID, changeInfo, tab) => {
 	await onUpdated(tabID);
 });
 
-chrome.tabs.onReplaced.addListener(async (addedTabId, removedTabId) => {
+browser.tabs.onReplaced.addListener(async (addedTabId, removedTabId) => {
 	await onUpdated(addedTabId);
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	if (request.message === "add_bookmark") {
-		chrome.storage.local.get(["user_id", "user_email"], (data) => {
+		browser.storage.local.get(["user_id", "user_email"], (data) => {
 			fetch(
 				`${Constants.BACKEND_URL}/${data.user_id}/blog?blog_id=${request.payload}`,
 				{
@@ -126,7 +155,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		});
 		return true;
 	} else if (request.message === "delete_bookmark") {
-		chrome.storage.local.get(["user_id", "user_email"], (data) => {
+		browser.storage.local.get(["user_id", "user_email"], (data) => {
 			fetch(
 				`${Constants.BACKEND_URL}/${data.user_id}/blog?blog_id=${request.payload}`,
 				{
@@ -146,7 +175,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		});
 		return true;
 	} else if (request.message === "get_new_post") {
-		chrome.storage.local.get(["user_id", "user_email"], (data) => {
+		browser.storage.local.get(["user_id", "user_email"], (data) => {
 			fetch(`${Constants.BACKEND_URL}/${data.user_id}/archive`, {
 				method: "GET",
 				headers: {
@@ -163,7 +192,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		});
 		return true;
 	} else if (request.message === "is_bookmarked") {
-		chrome.storage.local.get(["user_id", "user_email"], (data) => {
+		browser.storage.local.get(["user_id", "user_email"], (data) => {
 			fetch(
 				`${Constants.BACKEND_URL}/${data.user_id}/is_bookmarked?blog_id=${request.payload}`,
 				{
@@ -186,7 +215,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		});
 		return true;
 	} else if (request.message === "get_blogs") {
-		chrome.storage.local.get(["user_id"], (data) => {
+		browser.storage.local.get(["user_id"], (data) => {
 			fetch(`${Constants.BACKEND_URL}/${data.user_id}/blogs`, {
 				method: "GET",
 				headers: {
