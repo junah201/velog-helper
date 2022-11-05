@@ -234,13 +234,35 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				});
 		});
 		return true;
+	} else if (request.message === "veloghelper-change_email") {
+		browser.storage.local.get(["user_id"], (data) => {
+			fetch(
+				`${Constants.BACKEND_URL}/${data.user_id}/email?email=${request.payload}`,
+				{
+					method: "Post",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			)
+				.then((response) => {
+					return response.json();
+				})
+				.then((data) => {
+					sendResponse({
+						message: "success",
+					});
+					return;
+				});
+		});
+		return true;
 	}
 });
 
 // TODO : 나중에 고민...
 /*
 } else if (request.message === "update_new_post") {
-    chrome.storage.local.get(["user_id", "user_email"], (data) => {
+    browser.storage.local.get(["user_id", "user_email"], (data) => {
       fetch(`${Constants.BACKEND_URL}/update_new_post?user_id=${data.user_id}`, {
         method: "GET",
       })

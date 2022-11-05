@@ -103,6 +103,11 @@ async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db
     return {"is_bookmarked": crud.is_bookmarked(db, user_id=user_id, blog_id=blog_id)}
 
 
+@app.post("/{user_id}/email", response_model=dict)
+async def edit_email(user_id: str, email: str, db: Session = Depends(get_db)):
+    return {"status": crud.edit_email(db, user_id=user_id, email=email)}
+
+
 @app.get("/subscription/{user_id}")
 async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depends(get_db)):
     crud.set_subscription(db, user_id=user_id, is_subscription=is_subscribe)

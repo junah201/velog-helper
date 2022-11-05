@@ -132,3 +132,10 @@ def set_subscription(db: Session, user_id: str, is_subscription: bool) -> None:
         models.User.id == user_id).update(
             {"is_subscribed": is_subscription, "updated_at": str(datetime.datetime.now())})
     db.commit()
+
+
+def edit_email(db: Session, user_id: str, email: str) -> bool:
+    get_user_by_id(db=db, user_id=user_id)
+    db.query(models.User).filter(
+        models.User.id == user_id).update({"email": email})
+    db.commit()

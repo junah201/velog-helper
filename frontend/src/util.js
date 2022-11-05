@@ -15,7 +15,6 @@ function createNoticeItems() {
 		},
 		(response) => {
 			response.data.forEach(function (item, index, array) {
-				console.log(item);
 				const itemDiv = createElement("div", { class: "notice-item" });
 				const itemBlogImg = createElement("div", {
 					style: `background-image: url(${item.user_img})`,
@@ -43,8 +42,6 @@ function createBlogItems() {
 			message: "get_blogs",
 		},
 		(response) => {
-			console.log(response);
-			console.log(response.blogs);
 			response.blogs.forEach(function (item, index, array) {
 				const blogItemDiv = createElement("div", { class: "blog-item" });
 				const blogImg = createElement("img", {
@@ -82,10 +79,4 @@ function createBlogItems() {
 		}
 	);
 	return blogItemsDiv;
-}
-
-function createSettings() {
-	const SettingsDiv = createElement("div", { class: "setting-div" });
-	SettingsDiv.innerHTML = "아직 준비중이에요...";
-	return SettingsDiv;
 }
