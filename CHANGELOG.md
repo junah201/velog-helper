@@ -1,5 +1,9 @@
 # Velog Helper - Change Log
 
+# [v0.2.1.6](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.6)
+
+- 백엔드 서버의 URL이 http 에서 https로 변경됨에 따라 크롬 확장프로그램이 요청할 수 있는 Host를 수정하였습니다.
+
 # [v0.2.1.5](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.5)
 
 - 이제 웨일 브라우저에서도 velog-helper를 사용할 수 있습니다.
