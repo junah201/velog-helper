@@ -25,7 +25,8 @@
 	},
 	"host_permissions": [
 		"https://velog.io/*",
-		"http://velog-helper.herokuapp.com/*"
+		"http://velog-helper.herokuapp.com/*",
+		"https://velog-helper.herokuapp.com/*"
 	],
 	"permissions": [
 		"activeTab",
