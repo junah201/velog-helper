@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
+from typing import Optional
 
 
 class BlogBase(BaseModel):
@@ -44,7 +45,7 @@ class PostBase(BaseModel):
     user: str
     user_img: str
     link: str
-    short_description: str
+    short_description: Optional[str]
 
 
 class PostCreate(PostBase):
