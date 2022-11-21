@@ -118,7 +118,7 @@ async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depen
 
 
 @app.on_event("startup")
-@repeat_every(seconds=60 * 15)  # 15 min
+@repeat_every(seconds=60 * 15, raise_exceptions=True)  # 15 min
 async def update_new_post() -> None:
     logger.info("update new post start")
     print("update new post start")
