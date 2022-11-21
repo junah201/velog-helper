@@ -4,6 +4,7 @@ from app.database import models
 from app.utils.crawler import get_new_posts
 from app.common.consts import VELOG_DEFAULT_PROFILE_IMG
 from app.utils.mail import send_post_notice_email
+from app.utils.time_utils import UTC_to_KST
 
 
 async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 10, is_init: bool = False) -> None:
@@ -11,11 +12,11 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
     if is_init:
         last_uploaded_at = datetime.datetime(2005, 2, 1)
     else:
-        last_uploaded_at = datetime.datetime.strptime(
-            posts[0]["released_at"][:19], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=9)
+        last_uploaded_at = UTC_to_KST(datetime.datetime.strptime(
+            posts[0]["released_at"][:19], "%Y-%m-%dT%H:%M:%S"))
     for post in reversed(posts):
-        post_uploaded_at = datetime.datetime.strptime(
-            post["released_at"][:19], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=9)
+        post_uploaded_at = UTC_to_KST(datetime.datetime.strptime(
+            post["released_at"][:19], "%Y-%m-%dT%H:%M:%S"))
         if post_uploaded_at <= blog.last_uploaded_at:
             continue
 
@@ -30,15 +31,13 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
             user_img=post["user"]["profile"]["thumbnail"] if post["user"]["profile"]["thumbnail"] else VELOG_DEFAULT_PROFILE_IMG,
             link=post["url_slug"],
             created_at=post_uploaded_at,
-            updated_at=datetime.datetime.strptime(
-                post["updated_at"][:19], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=9),
+            updated_at=UTC_to_KST(datetime.datetime.strptime(
+                post["updated_at"][:19], "%Y-%m-%dT%H:%M:%S")),
         )
 
         db.add(db_post)
         db.commit()
         db.refresh(db_post)
-
-        # TODO : 버그가 있을 것을 예상되는 지점이므로 추후에 수정 필요
 
         db_users = db.query(models.Bookmark).filter(
             models.Bookmark.blog == db_post.user).all()
