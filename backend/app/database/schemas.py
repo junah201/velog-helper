@@ -44,6 +44,7 @@ class PostBase(BaseModel):
     user: str
     user_img: str
     link: str
+    short_description: str
 
 
 class PostCreate(PostBase):

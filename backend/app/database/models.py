@@ -32,6 +32,7 @@ class Post(Base, BaseMixin):
     user = Column(String(100), nullable=False)
     user_img = Column(String(200), nullable=False)
     link = Column(String(100), nullable=False)
+    short_description = Column(String(200), nullable=True, default=None)
 
 
 class Bookmark(Base, BaseMixin):

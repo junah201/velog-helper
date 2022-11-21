@@ -30,6 +30,7 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
             user=post["user"]["username"],
             user_img=post["user"]["profile"]["thumbnail"] if post["user"]["profile"]["thumbnail"] else VELOG_DEFAULT_PROFILE_IMG,
             link=post["url_slug"],
+            short_description=post["short_description"],
             created_at=post_uploaded_at,
             updated_at=UTC_to_KST(datetime.datetime.strptime(
                 post["updated_at"][:19], "%Y-%m-%dT%H:%M:%S")),

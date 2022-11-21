@@ -6,6 +6,7 @@ query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
     posts(cursor: $cursor, username: $username, temp_only: $temp_only, limit: $limit) {
         id
         title
+        short_description
         user {
         username
         profile {
