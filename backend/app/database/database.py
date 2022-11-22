@@ -5,7 +5,8 @@ from app.common.config import SQLALCHEMY_DATABASE_URL
 
 
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL
+    SQLALCHEMY_DATABASE_URL,
+    pool_recycle=60
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

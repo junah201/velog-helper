@@ -3,6 +3,7 @@ from app.database import models, schemas
 from app.utils import crawler
 from app.tasks.tasks import update_new_post_by_blog
 import datetime
+from typing import List
 
 from app.errors.exceptions import AlreadyBookmarkedBlog, NotFoundBlog, NotFoundUser, NotBookmarkedBlog, AlreadyRegistedUser, NotFoundBookmark
 
@@ -110,13 +111,17 @@ def delete_bookmark_blog(db: Session, user_id: str, blog_id: str):
     return db_bookmark.first()
 
 
-def get_archive_by_id(db: Session, user_id: str, skip: int = 0, limit: int = 15) -> dict:
+def get_archive_by_id(db: Session, user_id: str, skip: int = 0, limit: int = 15) -> List[models.Post]:
     db_bookmarked_blogs = db.query(models.Bookmark).filter(
         models.Bookmark.user == user_id)
     bookmarked_blogs = [
         bookmark.blog for bookmark in db_bookmarked_blogs.all()]
+
+    if not bookmarked_blogs:
+        return []
+
     db_posts = db.query(models.Post).filter(
-        models.Post.user.in_(bookmarked_blogs)).order_by(models.Post.updated_at.desc()).offset(skip).limit(limit).all()
+        models.Post.user.in_(bookmarked_blogs)).order_by(models.Post.created_at.desc()).offset(skip).limit(limit).all()
     return db_posts
 
 
