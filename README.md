@@ -65,3 +65,8 @@ PR을 위한 프론트엔드 실행 방법
   <img src="https://t1.daumcdn.net/kakaopay/icons/favicon.ico" width=50/>
 </a>
 
+---
+
+Email : junah.dev@gmail.com
+
+Discord : Junah#6689
