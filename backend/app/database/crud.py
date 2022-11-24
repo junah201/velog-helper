@@ -8,7 +8,7 @@ from typing import List
 from app.errors.exceptions import AlreadyBookmarkedBlog, NotFoundBlog, NotFoundUser, NotBookmarkedBlog, AlreadyRegistedUser, NotFoundBookmark
 
 
-async def create_blog(db: Session, blog: schemas.BlogCreate):
+async def create_blog(db: Session, blog: schemas.BlogCreate) -> models.Blog:
     # 블로그 생성
     now = datetime.datetime.now()
     db_blog = models.Blog(
@@ -28,11 +28,11 @@ async def create_blog(db: Session, blog: schemas.BlogCreate):
     return db_blog
 
 
-def get_blogs(db: Session, skip: int = 0, limit: int = 100):
+def get_blogs(db: Session, skip: int = 0, limit: int = 100) -> List[models.Blog]:
     return db.query(models.Blog).offset(skip).limit(limit).all()
 
 
-def get_blog_by_id(db: Session, blog_id: str, error: bool = True):
+def get_blog_by_id(db: Session, blog_id: str, error: bool = True) -> models.Blog:
     db_blog = db.query(models.Blog).filter(
         models.Blog.id == blog_id).first()
     if(db_blog == None and error):
@@ -40,16 +40,16 @@ def get_blog_by_id(db: Session, blog_id: str, error: bool = True):
     return db_blog
 
 
-def get_bookmarked_blogs_by_user(db: Session, user_id: int):
-    db_bookmark = db.query(models.Bookmark).filter(
+def get_bookmarked_blogs_by_user(db: Session, user_id: int) -> List[models.Blog]:
+    db_bookmarks = db.query(models.Bookmark).filter(
         models.Bookmark.user == user_id).all()
-    result = []
-    for bookmark in db_bookmark:
-        result.append(get_blog_by_id(db, blog_id=bookmark.blog))
-    return result
+    bookmarked_blogs = []
+    for bookmark in db_bookmarks:
+        bookmarked_blogs.append(get_blog_by_id(db, blog_id=bookmark.blog))
+    return bookmarked_blogs
 
 
-def create_user(db: Session, user: schemas.UserCreate):
+def create_user(db: Session, user: schemas.UserCreate) -> models.User:
     now = datetime.datetime.now()
     if db.query(models.User).filter(models.User.id == user.id).first() != None:
         raise AlreadyRegistedUser(user_id=user.id)
@@ -66,11 +66,11 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def get_users(db: Session, skip: int = 0, limit: int = 100):
+def get_users(db: Session, skip: int = 0, limit: int = 100) -> List[models.User]:
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
-def get_user_by_id(db: Session, user_id: str):
+def get_user_by_id(db: Session, user_id: str) -> models.User:
     db_user = db.query(models.User).filter(
         models.User.id == user_id).first()
     if(db_user == None):
@@ -78,7 +78,7 @@ def get_user_by_id(db: Session, user_id: str):
     return db_user
 
 
-async def add_bookmark_blog(db: Session, user_id: str, blog_id: str):
+async def add_bookmark_blog(db: Session, user_id: str, blog_id: str) -> models.Bookmark:
     now = datetime.datetime.now()
 
     db_blog = db.query(models.Blog).filter(
@@ -100,7 +100,7 @@ async def add_bookmark_blog(db: Session, user_id: str, blog_id: str):
     return db_bookmark
 
 
-def delete_bookmark_blog(db: Session, user_id: str, blog_id: str):
+def delete_bookmark_blog(db: Session, user_id: str, blog_id: str) -> models.Bookmark:
     db_bookmark = db.query(models.Bookmark).filter(
         models.Bookmark.user == user_id, models.Bookmark.blog == blog_id)
     if db_bookmark.first() == None:

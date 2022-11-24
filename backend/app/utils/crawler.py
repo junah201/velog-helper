@@ -1,5 +1,6 @@
 import aiohttp
 from app.common.consts import VELOG_API_URL, VELOG_DEFAULT_PROFILE_IMG
+from typing import List
 
 get_new_posts_query = """
 query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
@@ -21,7 +22,7 @@ query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
 """
 
 
-async def get_new_posts(username: str, limit: int = 10):
+async def get_new_posts(username: str, limit: int = 10) -> List[dict]:
     async with aiohttp.ClientSession() as session:
         async with session.post(VELOG_API_URL, json={"query": get_new_posts_query, "variables": {"username": username, "limit": limit}}) as resp:
             assert resp.status == 200
@@ -40,7 +41,7 @@ query UserProfile($username: String!) {
 """
 
 
-async def get_user_profile(username: str):
+async def get_user_profile(username: str) -> str:
     async with aiohttp.ClientSession() as session:
         async with session.post(VELOG_API_URL, json={"query": get_user_profile_query, "variables": {"username": username}}) as resp:
             assert resp.status == 200
