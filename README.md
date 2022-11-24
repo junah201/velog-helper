@@ -1,7 +1,6 @@
 <p align="center">
   <img src="./frontend/icons/icon128.png" width=100/>
 </p>
-<br/>
 <p align="center">
   Velog Helper
   <br/>  
@@ -65,7 +64,12 @@ PR을 위한 프론트엔드 실행 방법
   <img src="https://t1.daumcdn.net/kakaopay/icons/favicon.ico" width=50/>
 </a>
 
----
+| 날짜       | 성함   | 금액     | 메시지 | 수단   |
+|------------|--------|----------|--------|--------|
+| 2022.11.24 | 박수혁 | 10,000원 | 박수혁 | 카카오 |
+| 2022.11.24 | 윤혜원 | 10,000원 | 윤혜원 | 카카오 |
+
+# 기타 문의
 
 Email : junah.dev@gmail.com
 
