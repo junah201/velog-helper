@@ -53,9 +53,14 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
                 send_post_notice_email(
                     receiver_address=db_user.email, post=db_post, user_id=db_user.id)
 
+    last_uploaded_at = datetime.datetime.now()
+    if posts:
+        last_uploaded_at = UTC_to_KST(datetime.datetime.strptime(
+            posts[0]["released_at"][:19], "%Y-%m-%dT%H:%M:%S"))
+
     db.query(models.Blog).filter(
         models.Blog.id == blog.id).update(
-            {"last_uploaded_at": UTC_to_KST(datetime.datetime.strptime(posts[0]["released_at"][:19], "%Y-%m-%dT%H:%M:%S")),
+            {"last_uploaded_at": last_uploaded_at,
              "updated_at": str(datetime.datetime.now())})
     db.commit()
 
