@@ -22,7 +22,7 @@ query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
 """
 
 
-async def get_new_posts(username: str, limit: int = 10, return_type="List") -> List[dict]:
+async def get_new_posts(username: str, limit: int = 10, return_type: str = "List") -> List[dict]:
     async with aiohttp.ClientSession() as session:
         async with session.post(VELOG_API_URL, json={"query": get_new_posts_query, "variables": {"username": username, "limit": limit}}) as resp:
             assert resp.status == 200

@@ -4,7 +4,7 @@ from app.database import models
 from app.utils.crawler import get_new_posts
 from app.common.consts import VELOG_DEFAULT_PROFILE_IMG
 from app.utils import mail
-from app.utils.time_utils import UTC_to_KST
+from app.utils.time_utils import UTC_to_KST, remove_milliseconds
 from app.utils import crawler
 
 
@@ -76,6 +76,9 @@ async def update_edited_post(db: Session) -> None:
     db_blogs = db.query(models.Blog).all()
 
     for db_blog in db_blogs:
+        db_blog = db.query(models.Blog).filter(
+            models.Blog.id == "fdsfdafdsf").first()
+
         db_posts = db.query(models.Post).filter(
             models.Post.user == db_blog.id and models.Post.updated_at > datetime.datetime.now() - datetime.datetime(month=3)).limit(15).all()
 
@@ -85,13 +88,21 @@ async def update_edited_post(db: Session) -> None:
         new_posts = await crawler.get_new_posts(username=db_blog.id, limit=10, return_type="Dict")
 
         for db_post in db_posts:
+            print(db_post.title)
+
             # 삭제된 포스트
             if db_post.id not in new_posts.keys():
                 continue
 
-            # 수정 X
-            if db_post.updated_at == new_posts[db_post.id]["updated_at"]:
+            print(1)
+
+            # 수정  X포스트
+            if db_post.updated_at == datetime.datetime.strptime(new_posts[db_post.id]["updated_at"][:19], "%Y-%m-%dT%H:%M:%S"):
                 continue
+
+            print(2)
+            print(db_post.updated_at, datetime.datetime.strptime(
+                new_posts[db_post.id]["updated_at"][:19], "%Y-%m-%dT%H:%M:%S"))
 
             db_post.updated_at = new_posts[db_post.id]["updated_at"]
             db_post.title = new_posts[db_post.id]["title"]
@@ -106,12 +117,16 @@ async def update_edited_post(db: Session) -> None:
                 models.Bookmark.blog == db_post.user).all()
 
             for bookmarked_user in db_bookmarks:
-                db_user = db.query(models.User).filter(
-                    models.User.id == bookmarked_user.user).first()
+                db_users = db.query(models.User).filter(
+                    models.User.id == bookmarked_user.user).all()
 
-                if not db_user.email:
-                    continue
-
-                if db_user.is_subscribed:
-                    mail.send_edited_post_notice_email(
-                        receiver_address=db_user.email, post=db_post, user_id=db_user.id)
+                for db_user in db_users:
+                    print(f"user {db_user.email}")
+                    if not db_user.email:
+                        continue
+                    print(3)
+                    if db_user.is_subscribed:
+                        print(4)
+                        mail.send_edited_post_notice_email(
+                            receiver_address=db_user.email, post=db_post, user_id=db_user.id)
+        break

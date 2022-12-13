@@ -6,12 +6,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+env = Environment(
+    loader=FileSystemLoader('app/templates/'),
+    autoescape=select_autoescape(['html']),
+)
+
 
 def send_new_post_notice_email(receiver_address: str, post: Post, user_id: str) -> None:
-    env = Environment(
-        loader=FileSystemLoader('app/templates/'),
-        autoescape=select_autoescape(['html']),
-    )
     new_post_notice_template = env.get_template("new_post_notice2.html")
 
     message = MIMEMultipart()
@@ -40,10 +41,6 @@ def send_new_post_notice_email(receiver_address: str, post: Post, user_id: str) 
 
 
 def send_edited_post_notice_email(receiver_address: str, post: Post, user_id: str) -> None:
-    env = Environment(
-        loader=FileSystemLoader('app/templates/'),
-        autoescape=select_autoescape(['html']),
-    )
     edited_post_notice_template = env.get_template("edited_post_notice.html")
 
     message = MIMEMultipart()
