@@ -128,5 +128,15 @@ async def update_new_post() -> None:
     logger.info("update new post done")
 
 
+@app.on_event("startup")
+@repeat_every(seconds=60 * 60 * 24, raise_exceptions=True)  # 24 hours
+async def update_edited_post() -> None:
+    logger.info("update edited post start")
+    print("update edited post start")
+    with sessionmaker.context_session() as db:
+        await tasks.update_edited_post(db)
+    print("update edited post done")
+    logger.info("update edited post done")
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=False)

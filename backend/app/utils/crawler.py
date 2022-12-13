@@ -22,13 +22,24 @@ query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
 """
 
 
-async def get_new_posts(username: str, limit: int = 10) -> List[dict]:
+async def get_new_posts(username: str, limit: int = 10, return_type="List") -> List[dict]:
     async with aiohttp.ClientSession() as session:
         async with session.post(VELOG_API_URL, json={"query": get_new_posts_query, "variables": {"username": username, "limit": limit}}) as resp:
             assert resp.status == 200
             data = await resp.json()
-            return data["data"]["posts"]
 
+            if return_type == "List":
+                return data["data"]["posts"]
+
+            if return_type == "Dict":
+                result = {}
+
+                for post in data["data"]["posts"]:
+                    result[post["id"]] = post
+
+                return result
+
+            return data["data"]["posts"]
 
 get_user_profile_query = """
 query UserProfile($username: String!) {
