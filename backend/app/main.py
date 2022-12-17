@@ -118,7 +118,7 @@ async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depen
 
 
 @app.on_event("startup")
-@repeat_every(seconds=60 * 15, raise_exceptions=True)  # 15 min
+@repeat_every(seconds=60 * 15, raise_exceptions=True, wait_first=True)  # 15 min
 async def update_new_post() -> None:
     logger.info("update new post start")
     print("update new post start")
@@ -127,6 +127,21 @@ async def update_new_post() -> None:
     print("update new post done")
     logger.info("update new post done")
 
+
+@app.get("/is_edited", response_model=None)
+async def is_edited(db: Session = Depends(get_db)):
+    await tasks.update_edited_post(db)
+
+
+@app.on_event("startup")
+@repeat_every(seconds=60 * 60 * 12, raise_exceptions=True)  # 12 hours
+async def update_edited_post() -> None:
+    logger.info("update edited post start")
+    print("update edited post start")
+    with sessionmaker.context_session() as db:
+        await tasks.update_edited_post(db)
+    print("update edited post done")
+    logger.info("update edited post done")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=False)

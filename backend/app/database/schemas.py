@@ -55,6 +55,7 @@ class PostCreate(PostBase):
 class Post(PostBase):
     created_at: datetime
     updated_at: datetime
+    body_hash: Optional[str]
 
     class Config:
         orm_mode = True
