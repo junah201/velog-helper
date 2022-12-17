@@ -1,5 +1,4 @@
 function add_notice_button(div) {
-	// TODO : 재선언 문제 때문에 var을 사용하였지만 해결 방법 생각할 것
 	var noticeButton = createElement("button", {
 		class: "notice-button hxwLgQ",
 	});

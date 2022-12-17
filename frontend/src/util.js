@@ -16,18 +16,30 @@ function createNoticeItems() {
 		(response) => {
 			response.data.forEach(function (item, index, array) {
 				const itemDiv = createElement("div", { class: "notice-item" });
-				const itemBlogImg = createElement("div", {
-					style: `background-image: url(${item.user_img})`,
+
+				const BlogImgContainer = createElement("a", {
+					class: "notice-blog-img-container",
+					href: `https://velog.io/@${item.user}/`,
+					target: "_blank",
+				});
+
+				const itemBlogImg = createElement("img", {
+					src: item.user_img,
 					class: "notice-blog-img",
 				});
+
+				BlogImgContainer.append(itemBlogImg);
+
 				const itemTitle = createElement("a", {
+					class: "notice-post-title",
 					href: `https://velog.io/@${item.user}/${item.link}`,
 					target: "_blank",
 				});
+
 				itemTitle.innerHTML = item.title;
 				const itemDate = createElement("div", { class: "notice-date" });
 				itemDate.innerHTML = item.created_at.substring(5, 10);
-				itemDiv.append(itemBlogImg, itemTitle, itemDate);
+				itemDiv.append(BlogImgContainer, itemTitle, itemDate);
 				noticeItemsDiv.append(itemDiv);
 			});
 		}
