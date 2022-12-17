@@ -1,5 +1,10 @@
 # Velog Helper - Change Log
 
+# [v0.2.1.8](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.8)
+
+- #15 이제 아무런 알림이 없을 때 사용법을 알려주는 알림이 뜹니다.
+- #29 수정된 글 알림 기능이 일부 베타 유저에게 제공됩니다.
+
 # [v0.2.1.7](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.7)
 
 - #23 알림 목록에서 일부 블로그의 이미지가 안보이던 버그를 수정하였습니다.
