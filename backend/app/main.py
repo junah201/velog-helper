@@ -128,13 +128,13 @@ async def update_new_post() -> None:
     logger.info("update new post done")
 
 
-@app.get("/test", response_model=str)
-async def set_subscription(db: Session = Depends(get_db)):
+@app.get("/is_edited", response_model=None)
+async def is_edited(db: Session = Depends(get_db)):
     await tasks.update_edited_post(db)
 
 
 @app.on_event("startup")
-@repeat_every(seconds=60 * 60 * 24, raise_exceptions=True)  # 24 hours
+@repeat_every(seconds=60 * 60 * 12, raise_exceptions=True)  # 12 hours
 async def update_edited_post() -> None:
     logger.info("update edited post start")
     print("update edited post start")

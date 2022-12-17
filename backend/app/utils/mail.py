@@ -37,7 +37,7 @@ def send_new_post_notice_email(receiver_address: str, post: Post, user_id: str) 
     text = message.as_string()
     session.sendmail(MAIL_SENDER, receiver_address, text)
     session.quit()
-    print('Mail Sent (new_post)', receiver_address, post.title)
+    print(f'Mail Sent (new_post) "{receiver_address}" "{post.title}"')
 
 
 def send_edited_post_notice_email(receiver_address: str, post: Post, user_id: str) -> None:
@@ -65,4 +65,4 @@ def send_edited_post_notice_email(receiver_address: str, post: Post, user_id: st
     text = message.as_string()
     session.sendmail(MAIL_SENDER, receiver_address, text)
     session.quit()
-    print('Mail Sent (edited_post)', receiver_address, post.title)
+    print(f'Mail Sent (edited_post) "{receiver_address}" "{post.title}"')

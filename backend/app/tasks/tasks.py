@@ -73,40 +73,51 @@ async def update_new_post(db: Session) -> None:
 
 
 async def update_edited_post(db: Session) -> None:
-    db_blogs = db.query(models.Blog).all()
+    # * : 수정 알림 기능은 일부 블로그에 한하여 제공함 (베타 기능)
+    # * : 최근 3개월 이내 10개 글에 한하여 제공함
+    # target_blog : mowinckel, velog test blog
+    target_blog = ["mowinckel", "fdsfdafdsf"]
+    # target_user : Junah201, roeniss2
+    target_user = ["117995910119600379975", "108276358765267408445"]
+
+    db_blogs = db.query(models.Blog).filter(
+        models.Blog.id.in_(target_blog)).all()
 
     for db_blog in db_blogs:
-        db_blog = db.query(models.Blog).filter(
-            models.Blog.id == "fdsfdafdsf").first()
+        print("edit check", db_blog.id)
 
         db_posts = db.query(models.Post).filter(
-            models.Post.user == db_blog.id and models.Post.updated_at > datetime.datetime.now() - datetime.datetime(month=3)).limit(15).all()
+            models.Post.user == db_blog.id and models.Post.updated_at > datetime.datetime.now() - datetime.datetime(month=3)).limit(10).all()
 
         if not db_posts:
             continue
 
-        new_posts = await crawler.get_new_posts(username=db_blog.id, limit=10, return_type="Dict")
+        new_posts = await crawler.get_post_body_by_user(db_blog.id)
 
         for db_post in db_posts:
-            print(db_post.title)
+            print("수정 확인 중... ", db_post.title)
 
             # 삭제된 포스트
             if db_post.id not in new_posts.keys():
                 continue
 
-            print(1)
-
-            # 수정  X포스트
-            if db_post.updated_at == datetime.datetime.strptime(new_posts[db_post.id]["updated_at"][:19], "%Y-%m-%dT%H:%M:%S"):
+            # 만약 body의 해쉬값이 저장 안되어 있으면
+            if not db_post.body_hash:
+                db_post.body_hash = new_posts[db_post.id]["body_hash"]
+                db.add(db_post)
+                db.commit()
+                db.refresh(db_post)
                 continue
 
-            print(2)
-            print(db_post.updated_at, datetime.datetime.strptime(
-                new_posts[db_post.id]["updated_at"][:19], "%Y-%m-%dT%H:%M:%S"))
+            # 만약 body의 해쉬값이 같으면
+            if str(db_post.body_hash) == str(new_posts[db_post.id]["body_hash"]):
+                continue
+
+            print("수정됨... ", db_post.title)
 
             db_post.updated_at = new_posts[db_post.id]["updated_at"]
             db_post.title = new_posts[db_post.id]["title"]
-            db_post.short_description = new_posts[db_post.id]["short_description"]
+            db_post.body_hash = new_posts[db_post.id]["body_hash"]
 
             db.add(db_post)
             db.commit()
@@ -114,19 +125,14 @@ async def update_edited_post(db: Session) -> None:
 
             # 수정 안내 이메일 전송
             db_bookmarks = db.query(models.Bookmark).filter(
-                models.Bookmark.blog == db_post.user).all()
+                models.Bookmark.blog == db_post.user and models.Bookmark.user.in_(target_user)).all()
 
-            for bookmarked_user in db_bookmarks:
-                db_users = db.query(models.User).filter(
-                    models.User.id == bookmarked_user.user).all()
+            db_users = db.query(models.User).filter(
+                models.User.id.in_([i.user for i in db_bookmarks])).all()
 
-                for db_user in db_users:
-                    print(f"user {db_user.email}")
-                    if not db_user.email:
-                        continue
-                    print(3)
-                    if db_user.is_subscribed:
-                        print(4)
-                        mail.send_edited_post_notice_email(
-                            receiver_address=db_user.email, post=db_post, user_id=db_user.id)
-        break
+            for db_user in db_users:
+                if not db_user.email:
+                    continue
+                if db_user.is_subscribed:
+                    mail.send_edited_post_notice_email(
+                        receiver_address=db_user.email, post=db_post, user_id=db_user.id)
