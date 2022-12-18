@@ -3,17 +3,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.logger import logger
 from fastapi_utils.session import FastAPISessionMaker
 from fastapi_utils.tasks import repeat_every
+from fastapi.responses import HTMLResponse
 
 from sqlalchemy.orm import Session
 
 import logging
 import datetime
-from typing import List, Dict
 import uvicorn
+from typing import List, Dict
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from app.database import models, schemas, crud
 from app.database.database import SessionLocal, engine
 from app.common.config import SQLALCHEMY_DATABASE_URL
+from app.common.consts import VELOG_HELPER_VERSION
 from app.tasks import tasks
 
 logger.setLevel(logging.INFO)
@@ -29,6 +32,11 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+env = Environment(
+    loader=FileSystemLoader('app/templates/'),
+    autoescape=select_autoescape(['html']),
 )
 
 # Dependency
@@ -98,23 +106,26 @@ async def read_archive(user_id: str, skip: int = 0, limit: int = 15, db: Session
     return crud.get_archive_by_id(db, user_id=user_id, skip=skip, limit=limit)
 
 
-@app.get("/{user_id}/is_bookmarked", response_model=dict)
+@app.get("/{user_id}/is_bookmarked", response_model=Dict)
 async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db)):
     return {"is_bookmarked": crud.is_bookmarked(db, user_id=user_id, blog_id=blog_id)}
 
 
-@app.post("/{user_id}/email", response_model=dict)
+@app.post("/{user_id}/email", response_model=Dict)
 async def edit_email(user_id: str, email: str, db: Session = Depends(get_db)):
     return {"status": crud.edit_email(db, user_id=user_id, email=email)}
 
 
-@app.get("/subscription/{user_id}", response_model=str)
+@app.get("/subscription/{user_id}", response_class=HTMLResponse)
 async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depends(get_db)):
     crud.set_subscription(db, user_id=user_id, is_subscription=is_subscribe)
+
     if is_subscribe:
-        return "You are subscribed"
+        subscription_template = env.get_template("subscription.html")
+        return HTMLResponse(content=subscription_template.render(user_id=user_id), status_code=200)
     else:
-        return "You are unsubscribed"
+        unsubscription_template = env.get_template("unsubscription.html")
+        return HTMLResponse(content=unsubscription_template.render(user_id=user_id), status_code=200)
 
 
 @app.on_event("startup")
