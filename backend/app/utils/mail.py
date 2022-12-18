@@ -13,7 +13,7 @@ env = Environment(
 
 
 def send_new_post_notice_email(receiver_address: str, post: Post, user_id: str) -> None:
-    new_post_notice_template = env.get_template("new_post_notice2.html")
+    new_post_notice_template = env.get_template("new_post_notice.html")
 
     message = MIMEMultipart()
     message['From'] = MAIL_SENDER
