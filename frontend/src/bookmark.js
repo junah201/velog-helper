@@ -8,20 +8,16 @@ function add_bookmark_button() {
 	bookmarkButton.addEventListener("click", () => {
 		if (bookmarkButton.classList.contains("yellow-bookmark-button")) {
 			bookmarkButton.classList.remove("yellow-bookmark-button");
-			chrome.runtime.sendMessage(
-				{
-					message: "delete_bookmark",
-					payload: window.location.pathname.split("/")[1].substring(1),
-				}
-			);
+			chrome.runtime.sendMessage({
+				message: "delete_bookmark",
+				payload: window.location.pathname.split("/")[1].substring(1),
+			});
 		} else {
 			bookmarkButton.classList.add("yellow-bookmark-button");
-			chrome.runtime.sendMessage(
-				{
-					message: "add_bookmark",
-					payload: window.location.pathname.split("/")[1].substring(1),
-				}
-			);
+			chrome.runtime.sendMessage({
+				message: "add_bookmark",
+				payload: window.location.pathname.split("/")[1].substring(1),
+			});
 		}
 	});
 
