@@ -1,5 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400&display=swap");
+
+*,
+*:before,
+*:after {
+	padding: 0;
+	margin: 0;
+	font-family: "Noto Sans KR", sans-serif;
+}
+
 html {
 	background-color: white;
+}
+
+html::-webkit-scrollbar {
+	width: 8px;
+}
+html::-webkit-scrollbar-thumb {
+	background-color: grey;
+	border-radius: 10px;
+	background-clip: padding-box;
+	border: 2px solid transparent;
+}
+html::-webkit-scrollbar-track {
+	background-color: transparent;
+	border-radius: 10px;
 }
 
 body {
@@ -19,6 +43,7 @@ header > button {
 	background-color: inherit;
 	color: white;
 	font-size: 20px;
+	font-weight: normal;
 	display: inline;
 	text-align: center;
 	margin-top: auto;
@@ -26,7 +51,6 @@ header > button {
 	margin-left: 6px;
 	margin-right: 6px;
 	border: none;
-	font-weight: bold;
 }
 
 header > button:hover {
@@ -37,8 +61,24 @@ header > button:hover {
 .header:nth-child(1) {
 	padding-top: 32px;
 }
+
 main > div {
 	display: none;
+}
+
+.intro-div {
+	margin: 10px;
+	padding: 10px;
+	height: 100%;
+	font-size: large;
+	color: #8d8d8d;
+}
+
+.intro-div p {
+	margin: 10px;
+	padding: 10px;
+	font-size: large;
+	color: #8d8d8d;
 }
 
 .notice-item {
@@ -66,6 +106,10 @@ main > div {
 	-webkit-box-orient: vertical;
 	text-decoration: none;
 	font-size: 14px;
+}
+
+.notice-post-title {
+	width: 400px;
 }
 
 .blog-item {
@@ -132,10 +176,11 @@ main > div {
 
 .setting-div {
 	padding: 1rem;
+	font-size: 16px;
 }
 
 .display {
-	display: inline;
+	display: block;
 }
 
 .undisplay {
