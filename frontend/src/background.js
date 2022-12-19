@@ -1,5 +1,6 @@
 const Constants = {
 	BACKEND_URL: "https://velog-helper.herokuapp.com",
+	// BACKEND_URL: "http://localhost:8000"
 };
 
 globalThis.browser = (function () {
@@ -13,7 +14,6 @@ globalThis.browser = (function () {
 
 function registUser() {
 	browser.storage.local.get(["user_id", "user_email"], (data) => {
-		console.log(data.user_id, data.user_email);
 		fetch(`${Constants.BACKEND_URL}/user`, {
 			method: "POST",
 			headers: {
@@ -251,6 +251,31 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				.then((data) => {
 					sendResponse({
 						message: "success",
+					});
+					return;
+				});
+		});
+		return true;
+	} else if (request.message === "veloghelper-get_email") {
+		/**
+		 * Backend에서 email을 가져오는 코드
+		 * @author myoun
+		 */
+
+		browser.storage.local.get(["user_id"], (data) => {
+			fetch(`${Constants.BACKEND_URL}/user?user_id=${data.user_id}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+				.then((response) => {
+					return response.json();
+				})
+				.then((data) => {
+					sendResponse({
+						message: "success",
+						email: data.email,
 					});
 					return;
 				});

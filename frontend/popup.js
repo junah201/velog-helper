@@ -1,5 +1,6 @@
 const Constants = {
 	BACKEND_URL: "https://velog-helper.herokuapp.com",
+	// BACKEND_URL: "http://localhost:8000"
 };
 
 const blogItmes = createBlogItems();
@@ -30,6 +31,15 @@ noticeButton.addEventListener("click", () => {
 settingButton.addEventListener("click", () => {
 	undisplayDivs();
 	document.querySelector(".setting-div").classList.add("display");
+
+	// Set Email Text
+	chrome.runtime.sendMessage(
+		{
+			message: "veloghelper-get_email"
+		}
+	).then((data) => {
+		document.querySelector("#current-email-span").textContent = data.email;
+	});
 });
 
 document

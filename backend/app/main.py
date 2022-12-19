@@ -16,7 +16,6 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from app.database import models, schemas, crud
 from app.database.database import SessionLocal, engine
 from app.common.config import SQLALCHEMY_DATABASE_URL
-from app.common.consts import VELOG_HELPER_VERSION
 from app.tasks import tasks
 
 logger.setLevel(logging.INFO)
