@@ -1,5 +1,11 @@
 # Velog Helper - Change Log
 
+# [v0.2.1.9](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.9)
+
+- #28 이메일 구독 해제 시 쉽게 다시 구독할 수 있는 사이트가 제공됩니다.
+- #34 팝업창에서 이메일 주소 변경 전 현재 이메일 주소가 표시됩니다.
+- 팝업창의 전체적인 디자인이 약간 수정되었습니다.
+
 # [v0.2.1.8](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.8)
 
 - #15 이제 아무런 알림이 없을 때 사용법을 알려주는 알림이 뜹니다.
