@@ -4,6 +4,7 @@ from fastapi.logger import logger
 from fastapi_utils.session import FastAPISessionMaker
 from fastapi_utils.tasks import repeat_every
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 from sqlalchemy.orm import Session
 
@@ -25,6 +26,8 @@ models.Base.metadata.create_all(bind=engine)
 sessionmaker = FastAPISessionMaker(SQLALCHEMY_DATABASE_URL)
 app = FastAPI()
 
+
+app.mount("/static", StaticFiles(directory="./app/static"), name="static")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -38,10 +41,11 @@ env = Environment(
     autoescape=select_autoescape(['html']),
 )
 
-# Dependency
-
 
 def get_db():
+    """
+    Dependency to get a database session.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -113,6 +117,12 @@ async def is_bookmarked(user_id: str, blog_id: str, db: Session = Depends(get_db
 @app.post("/{user_id}/email", response_model=Dict)
 async def edit_email(user_id: str, email: str, db: Session = Depends(get_db)):
     return {"status": crud.edit_email(db, user_id=user_id, email=email)}
+
+
+@app.get("/guide", response_class=HTMLResponse)
+async def get_guide():
+    guide_template = env.get_template("guide.html")
+    return HTMLResponse(content=guide_template.render(), status_code=200)
 
 
 @app.get("/subscription/{user_id}", response_class=HTMLResponse)

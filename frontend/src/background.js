@@ -79,6 +79,11 @@ browser.runtime.onInstalled.addListener(() => {
 			})
 			.then(registUser);
 	}
+
+	// 사용 설명서 페이지를 새 탭으로 열기
+	browser.tabs.create({
+		url: `${Constants.BACKEND_URL}/guide`,
+	});
 });
 
 async function onUpdated(tabId) {
