@@ -92,7 +92,7 @@ async function onUpdated(tabId) {
 		browser.scripting
 			.insertCSS({
 				target: { tabId: tab.id },
-				files: ["./src/notice.css"],
+				files: ["./src/notice.css", "./src/scroll.css"],
 			})
 			.then(() => {
 				browser.scripting.executeScript({
@@ -108,10 +108,6 @@ async function onUpdated(tabId) {
 		/^http/.test(tab.url) &&
 		tab.url != "https://velog.io/" &&
 		tab.url[17] === "@"
-		/*
-    tab.url.split("/").slice(-1) != "" &&
-    tab.url.split("/").length === 4
-    */
 	) {
 		browser.scripting
 			.insertCSS({
