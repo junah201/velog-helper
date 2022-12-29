@@ -1,5 +1,5 @@
 const Constants = {
-	BACKEND_URL: "https://velog-helper.herokuapp.com",
+	BACKEND_URL: "https://3bxsddbb222i3zghh77frbcyoa0pbwan.lambda-url.ap-northeast-2.on.aws",
 };
 
 const blogItmes = createBlogItems();

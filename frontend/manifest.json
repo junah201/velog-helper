@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Velog Helper",
-	"version": "0.2.1.9",
+	"version": "1.0.0",
 	"action": {
 		"default_popup": "./popup.html",
 		"default_icon": {
@@ -25,8 +25,8 @@
 	},
 	"host_permissions": [
 		"https://velog.io/*",
-		"http://velog-helper.herokuapp.com/*",
-		"https://velog-helper.herokuapp.com/*"
+		"http://3bxsddbb222i3zghh77frbcyoa0pbwan.lambda-url.ap-northeast-2.on.aws/*",
+		"https://3bxsddbb222i3zghh77frbcyoa0pbwan.lambda-url.ap-northeast-2.on.aws/*"
 	],
 	"permissions": [
 		"activeTab",
