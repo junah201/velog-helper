@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.database import models, schemas
 from app.utils import crawler
-from app.tasks.tasks import update_new_post_by_blog
+from app.tasks.new_post import update_new_post_by_blog
 import datetime
 from typing import List
 

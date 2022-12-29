@@ -58,9 +58,9 @@ query Posts($cursor: ID, $username: String, $temp_only: Boolean, $limit: Int) {
 """
 
 
-async def get_post_body_by_user(user_id: str, limit: int = 15) -> dict:
+async def get_post_body_by_user(user_id: str, limit: int = 20) -> dict:
     async with aiohttp.ClientSession() as session:
-        async with session.post(VELOG_API_URL, json={"query": get_post_body_query, "variables": {"username": user_id, "limit": 10}}) as resp:
+        async with session.post(VELOG_API_URL, json={"query": get_post_body_query, "variables": {"username": user_id, "limit": limit}}) as resp:
             assert resp.status == 200
             data = await resp.json()
 

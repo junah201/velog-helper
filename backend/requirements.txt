@@ -1,10 +1,11 @@
 fastapi == 0.79.0
+fastapi_utils
 SQLAlchemy == 1.4.39
-fastapi-utils == 0.2.1
-uvicorn == 0.18.2
 aiohttp == 3.8.1
-anyio == 3.6.1
 pydantic == 1.9.1
-mysqlclient == 2.1.1
+mysqlclient
+pymysql
 jinja2 == 3.1.2
 cryptography == 38.0.4
+mangum
+discord

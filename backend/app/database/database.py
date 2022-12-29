@@ -3,6 +3,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from app.common.config import SQLALCHEMY_DATABASE_URL
 
+import pymysql
+
+pymysql.install_as_MySQLdb()
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,

@@ -1,31 +1,23 @@
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.logger import logger
 from fastapi_utils.session import FastAPISessionMaker
-from fastapi_utils.tasks import repeat_every
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-
 from sqlalchemy.orm import Session
-
-import logging
+from mangum import Mangum
 import datetime
-import uvicorn
 from typing import List, Dict
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from app.database import models, schemas, crud
 from app.database.database import SessionLocal, engine
 from app.common.config import SQLALCHEMY_DATABASE_URL
-from app.tasks import tasks
-
-logger.setLevel(logging.INFO)
 
 models.Base.metadata.create_all(bind=engine)
 
 sessionmaker = FastAPISessionMaker(SQLALCHEMY_DATABASE_URL)
-app = FastAPI()
 
+app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="./app/static"), name="static")
 app.add_middleware(
@@ -58,17 +50,17 @@ async def index():
     return f"Notification API (UTC: {datetime.datetime.utcnow().strftime('%Y.%m.%d %H:%M:%S')})"
 
 
-@app.post("/blog/", response_model=schemas.Blog)
+@app.post("/blog", response_model=schemas.Blog)
 async def create_blog(blog: schemas.BlogCreate, db: Session = Depends(get_db)):
     return crud.create_blog(db, blog)
 
 
-@app.get("/blog/", response_model=schemas.Blog)
+@app.get("/blog", response_model=schemas.Blog)
 async def read_blog(blog_id: str, db: Session = Depends(get_db)):
     return crud.get_blog_by_id(db, blog_id)
 
 
-@app.get("/blogs/", response_model=List[schemas.Blog])
+@app.get("/blogs", response_model=List[schemas.Blog])
 async def read_blogs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     blogs = crud.get_blogs(db, skip=skip, limit=limit)
     return blogs
@@ -84,7 +76,7 @@ async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db, user)
 
 
-@app.get("/users/", response_model=List[schemas.User])
+@app.get("/users", response_model=List[schemas.User])
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_users(db, skip=skip, limit=limit)
 
@@ -136,32 +128,4 @@ async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depen
         unsubscription_template = env.get_template("unsubscription.html")
         return HTMLResponse(content=unsubscription_template.render(user_id=user_id), status_code=200)
 
-
-@app.on_event("startup")
-@repeat_every(seconds=60 * 15, raise_exceptions=True, wait_first=True)  # 15 min
-async def update_new_post() -> None:
-    logger.info("update new post start")
-    print("update new post start")
-    with sessionmaker.context_session() as db:
-        await tasks.update_new_post(db)
-    print("update new post done")
-    logger.info("update new post done")
-
-
-@app.get("/is_edited", response_model=None)
-async def is_edited(db: Session = Depends(get_db)):
-    await tasks.update_edited_post(db)
-
-
-@app.on_event("startup")
-@repeat_every(seconds=60 * 60 * 12, raise_exceptions=True)  # 12 hours
-async def update_edited_post() -> None:
-    logger.info("update edited post start")
-    print("update edited post start")
-    with sessionmaker.context_session() as db:
-        await tasks.update_edited_post(db)
-    print("update edited post done")
-    logger.info("update edited post done")
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=False)
+lambda_handler = Mangum(app, lifespan="off")
