@@ -8,4 +8,3 @@ pymysql
 jinja2 == 3.1.2
 cryptography == 38.0.4
 mangum
-discord

@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 from app.database import models
 from app.utils import mail, discord_logging
 from app.utils.crawler import get_post_body_by_user
+from typing import List, Tuple
 
 
-async def update_edited_post_by_blog(db: Session, blog: models.Blog) -> int:
-    edited_post_cnt: int = 0
+async def update_edited_post_by_blog(db: Session, blog: models.Blog) -> List[str]:
+    edited_posts: List[str] = list()
 
     # target_user : Junah201, roeniss2
     target_user = ["117995910119600379975", "108276358765267408445"]
@@ -15,7 +16,7 @@ async def update_edited_post_by_blog(db: Session, blog: models.Blog) -> int:
         models.Post.user == blog.id and models.Post.updated_at > datetime.datetime.now() - datetime.datetime(month=3)).limit(10).all()
 
     if not db_posts:
-        return edited_post_cnt
+        return edited_posts
 
     new_posts = await get_post_body_by_user(blog.id)
 
@@ -42,17 +43,15 @@ async def update_edited_post_by_blog(db: Session, blog: models.Blog) -> int:
 
         print("수정됨... ", db_post.title)
 
-        edited_post_cnt += 1
-
         db_post.updated_at = new_posts[db_post.id]["updated_at"]
         db_post.title = new_posts[db_post.id]["title"]
         db_post.body_hash = new_posts[db_post.id]["body_hash"]
 
-        
         db.add(db_post)
         db.commit()
         db.refresh(db_post)
-        
+
+        edited_posts.append(f"{db_post.user} - {db_post.title}")
 
         # 수정 안내 이메일 전송
         db_bookmarks = db.query(models.Bookmark).filter(
@@ -65,9 +64,10 @@ async def update_edited_post_by_blog(db: Session, blog: models.Blog) -> int:
             if not db_user.email:
                 continue
             if db_user.is_subscribed:
-                mail.send_edited_post_notice_email(receiver_address=db_user.email, post=db_post, user_id=db_user.id)
+                mail.send_edited_post_notice_email(
+                    receiver_address=db_user.email, post=db_post, user_id=db_user.id)
 
-    return edited_post_cnt
+    return edited_posts
 
 
 async def update_edited_post(db: Session) -> None:
@@ -82,11 +82,14 @@ async def update_edited_post(db: Session) -> None:
     db_blogs = db.query(models.Blog).filter(
         models.Blog.id.in_(target_blog)).all()
 
+    total_edited_posts = list()
+
     for db_blog in db_blogs:
-        edited_post: int = await update_edited_post_by_blog(db=db, blog=db_blog)
+        edited_posts: List[str] = await update_edited_post_by_blog(db=db, blog=db_blog)
 
-        if edited_post:
+        if edited_posts:
             total_updated_blog_cnt += 1
-            total_updated_post_cnt += edited_post
+            total_updated_post_cnt += len(edited_posts)
+            total_edited_posts.extend(edited_posts)
 
-    await discord_logging.logging_post_update(total_updated_blog_cnt, total_updated_post_cnt)
+    await discord_logging.logging_post_update(total_updated_blog_cnt, total_edited_posts)

@@ -2,34 +2,70 @@
 디스코드 채널에 웹훅을 이용해서 로깅
 """
 
-from discord import Webhook, Embed, Color
-import aiohttp, datetime
+import aiohttp
+import datetime
 from app.common.config import DISCORD_WEBHOOKS_NEW_POST_UPLOAD_LOG, DISCORD_WEBHOOKS_POST_UPDATE_LOG
+from typing import List
 
-async def logging_new_post_upload(total_updated_blog_cnt, total_updated_post_cnt):
+
+color = {
+    "green": 0x2ECC71,
+}
+
+
+async def logging_new_post_upload(total_updated_blog_cnt: int, total_updated_posts: List[str]):
     async with aiohttp.ClientSession() as session:
-        webhook = Webhook.from_url(
+        data = {
+            "content": "",
+            "embeds": [
+                {
+                    "title": "새 글 업데이트 로그",
+                    "description": f"블로그 : `{total_updated_blog_cnt}`개\n포스트 : `{len(total_updated_posts)}`개",
+                    "color": color["green"],
+                    "footer": {
+                        "text": f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+                    }
+                }
+            ]
+        }
+
+        if total_updated_posts:
+            tmp = ""
+            print(total_updated_posts)
+            for post in total_updated_posts:
+                tmp += post
+            data["embeds"][0]["description"] += f"\n\n```{tmp}```"
+
+        await session.post(
             url=DISCORD_WEBHOOKS_NEW_POST_UPLOAD_LOG,
-            session=session
-            )
+            json=data
+        )
 
-        embed = Embed(
-            title="새 글 업데이트 로그", description=f"블로그 : `{total_updated_blog_cnt}`개\n포스트 : `{total_updated_post_cnt}`개", color=Color.green())
-        embed.set_footer(
-            text=f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-        await webhook.send(embed=embed)
-
-async def logging_post_update(total_edited_blog_cnt, total_edited_post_cnt):
+async def logging_post_update(total_edited_blog_cnt: int, total_edited_posts: List[str]):
     async with aiohttp.ClientSession() as session:
-        webhook = Webhook.from_url(
+        data = {
+            "content": "",
+            "embeds": [
+                {
+                    "title": "수정된 글 업데이트 로그",
+                    "description": f"블로그 : `{total_edited_blog_cnt}`개\n포스트 : `{len(total_edited_posts)}`개",
+                    "color": color["green"],
+                    "footer": {
+                        "text": f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+                    }
+                }
+            ]
+        }
+
+        if total_edited_posts:
+            tmp = ""
+            print(total_edited_posts)
+            for post in total_edited_posts:
+                tmp += post
+            data["embeds"][0]["description"] += f"\n\n```{tmp}```"
+
+        await session.post(
             url=DISCORD_WEBHOOKS_POST_UPDATE_LOG,
-            session=session
-            )
-
-        embed = Embed(
-            title="수정된 글 업데이트 로그", description=f"블로그 : `{total_edited_blog_cnt}`개\n포스트 : `{total_edited_post_cnt}`개", color=Color.green())
-        embed.set_footer(
-            text=f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-
-        await webhook.send(embed=embed)
+            json=data
+        )
