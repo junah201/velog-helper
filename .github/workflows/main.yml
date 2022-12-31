@@ -1,4 +1,4 @@
-name: FastAPI CI/CD
+name: Velog Helper CI/CD
 
 on:
   push:
