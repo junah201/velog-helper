@@ -11,7 +11,10 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from app.database import models, schemas, crud
 from app.database.database import SessionLocal, engine
-from app.common.config import SQLALCHEMY_DATABASE_URL
+from app.common.config import SQLALCHEMY_DATABASE_URL, LAUNCH_MODE
+from app.edit_post import lambda_handler as edit_post_lambda_handler
+from app.new_post import lambda_handler as new_post_lambda_handler
+from app.utils.loop import repeat_every
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -128,4 +131,12 @@ async def set_subscription(user_id: str, is_subscribe: bool, db: Session = Depen
         unsubscription_template = env.get_template("unsubscription.html")
         return HTMLResponse(content=unsubscription_template.render(user_id=user_id), status_code=200)
 
-lambda_handler = Mangum(app, lifespan="off")
+@app.on_event("startup")
+async def dev_development() -> None:
+    if LAUNCH_MODE != "test":
+        return
+
+    repeat_every(new_post_lambda_handler, [None, None], seconds=60 * 60 * 12, raise_exceptions=True)
+    repeat_every(edit_post_lambda_handler, [None, None], seconds=60 * 15, raise_exceptions=True, wait_first=True)
+
+lambda_handler = Mangum(app, lifespan="off") # do not change lifespan to on
