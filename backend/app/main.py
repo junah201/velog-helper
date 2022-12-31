@@ -1,12 +1,11 @@
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_utils.session import FastAPISessionMaker
-from fastapi_utils.tasks import repeat_every
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from mangum import Mangum
-import datetime, asyncio
+import datetime
 from typing import List, Dict
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
