@@ -1,5 +1,6 @@
 const Constants = {
-	BACKEND_URL: "https://3bxsddbb222i3zghh77frbcyoa0pbwan.lambda-url.ap-northeast-2.on.aws",
+	BACKEND_URL:
+		"https://3bxsddbb222i3zghh77frbcyoa0pbwan.lambda-url.ap-northeast-2.on.aws",
 };
 
 const blogItmes = createBlogItems();
@@ -36,7 +37,7 @@ settingButton.addEventListener("click", () => {
 	undisplayDivs();
 	settingDiv.classList.add("display");
 
-	chrome.runtime
+	browser.runtime
 		.sendMessage({
 			message: "veloghelper-get_email",
 		})
@@ -53,7 +54,7 @@ document
 			alert(email.validationMessage);
 			return;
 		}
-		chrome.runtime.sendMessage(
+		browser.runtime.sendMessage(
 			{
 				message: "veloghelper-change_email",
 				payload: email.value,

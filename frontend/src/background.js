@@ -1,5 +1,6 @@
 const Constants = {
-	BACKEND_URL: "https://3bxsddbb222i3zghh77frbcyoa0pbwan.lambda-url.ap-northeast-2.on.aws",
+	BACKEND_URL:
+		"https://3bxsddbb222i3zghh77frbcyoa0pbwan.lambda-url.ap-northeast-2.on.aws",
 };
 
 globalThis.browser = (function () {
@@ -114,14 +115,25 @@ async function onUpdated(tabId) {
 				files: ["./src/bookmark.css"],
 			})
 			.then(() => {
-				browser.scripting
-					.executeScript({
-						target: { tabId: tab.id },
-						files: ["./src/util.js", "./src/bookmark.js"],
-					})
-					.then(() => {});
+				browser.scripting.executeScript({
+					target: { tabId: tab.id },
+					files: ["./src/util.js", "./src/bookmark.js"],
+				});
 			})
 			.catch((err) => console.log(err));
+	}
+	// 검색 페이지에 쿼리가 들어가 있다면
+	if (
+		tab.status == "complete" &&
+		/^http/.test(tab.url) &&
+		tab.url != "https://velog.io/search" &&
+		tab.url.slice(0, 26) === "https://velog.io/search?q="
+	) {
+		console.log("stert");
+		browser.scripting.executeScript({
+			target: { tabId: tab.id },
+			files: ["./src/util.js", "./src/search.js"],
+		});
 	}
 }
 
@@ -134,6 +146,7 @@ browser.tabs.onReplaced.addListener(async (addedTabId, removedTabId) => {
 });
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+	console.log(request);
 	if (request.message === "add_bookmark") {
 		browser.storage.local.get(["user_id", "user_email"], (data) => {
 			fetch(
@@ -257,11 +270,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		});
 		return true;
 	} else if (request.message === "veloghelper-get_email") {
-		/**
-		 * Backend에서 email을 가져오는 코드
-		 * @author myoun
-		 */
-
 		browser.storage.local.get(["user_id"], (data) => {
 			fetch(`${Constants.BACKEND_URL}/user?user_id=${data.user_id}`, {
 				method: "GET",
@@ -281,23 +289,24 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				});
 		});
 		return true;
+	} else if (request.message === "get_search_results") {
+		fetch(`${Constants.BACKEND_URL}/search?query=${request.payload}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				console.log(data);
+				sendResponse({
+					message: "success",
+					total: data.total,
+					results: data.results,
+				});
+				return;
+			});
 	}
 });
-
-// TODO : 나중에 고민...
-/*
-} else if (request.message === "update_new_post") {
-    browser.storage.local.get(["user_id", "user_email"], (data) => {
-      fetch(`${Constants.BACKEND_URL}/update_new_post?user_id=${data.user_id}`, {
-        method: "GET",
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          sendResponse({ message: "success" });
-          return;
-        });
-    });
-    return true;
-    */

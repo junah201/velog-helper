@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 
 class BlogBase(BaseModel):
@@ -77,3 +77,17 @@ class Bookmark(BookmarkBase):
 
     class Config:
         orm_mode = True
+
+
+class SearchResult(BaseModel):
+    title: str
+    html_title: str
+    link: str
+    snippet: str
+    html_snippet: str
+    thumbnail_link: str
+
+
+class SearchResults(BaseModel):
+    total: int
+    results: List[SearchResult] = []

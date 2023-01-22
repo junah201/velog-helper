@@ -1,3 +1,12 @@
+globalThis.browser = (function () {
+	return (
+		globalThis.msBrowser ||
+		globalThis.browser ||
+		globalThis.chrome ||
+		globalThis.whale
+	);
+})();
+
 function createElement(tag, attrs) {
 	const keys = Object.keys(attrs || {});
 	const el = document.createElement(tag);
@@ -47,7 +56,7 @@ function createNoticeitem(item, isNotice) {
 
 function createNoticeItems() {
 	const noticeItemsDiv = createElement("div", { class: "notice-item-div" });
-	chrome.runtime.sendMessage(
+	browser.runtime.sendMessage(
 		{
 			message: "get_new_post",
 		},
@@ -99,7 +108,7 @@ function createNoticeItems() {
 
 function createBlogItems() {
 	const blogItemsDiv = createElement("div", { class: "blog-item-div" });
-	chrome.runtime.sendMessage(
+	browser.runtime.sendMessage(
 		{
 			message: "get_blogs",
 		},
@@ -124,7 +133,7 @@ function createBlogItems() {
 				blogItemsDiv.append(blogItemDiv);
 
 				blogRemoveButton.addEventListener("click", (e) => {
-					chrome.runtime.sendMessage(
+					browser.runtime.sendMessage(
 						{
 							message: "delete_bookmark",
 							payload: e.target.value,
