@@ -125,11 +125,16 @@ def get_archive_by_id(db: Session, user_id: str, skip: int = 0, limit: int = 15)
     return db_posts
 
 
-def is_bookmarked(db: Session, user_id: str, blog_id: str):
+def is_bookmarked(db: Session, user_id: str, blog_id: str) -> bool:
     db_bookmarked_blogs = db.query(models.Bookmark).filter(
         models.Bookmark.user_id == user_id, models.Bookmark.blog_id == blog_id)
 
     return db_bookmarked_blogs.first() != None
+
+
+def get_followers(db: Session, blog_id: str) -> int:
+    return db.query(models.Bookmark).filter(
+        models.Bookmark.blog_id == blog_id).count()
 
 
 def set_subscription(db: Session, user_id: str, is_subscription: bool) -> None:

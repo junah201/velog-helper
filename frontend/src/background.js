@@ -308,5 +308,22 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				});
 				return;
 			});
+	} else if (request.message === "get_followers") {
+		fetch(`${Constants.BACKEND_URL}/${request.payload}/followers`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				sendResponse({
+					message: "success",
+					followers: data,
+				});
+				return;
+			});
 	}
 });

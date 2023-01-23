@@ -1,5 +1,6 @@
-fastapi == 0.79.0
+fastapi == 0.89.1
 fastapi_utils
+uvicorn == 0.20.0
 SQLAlchemy == 1.4.39
 aiohttp == 3.8.1
 pydantic == 1.9.1
