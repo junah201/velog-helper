@@ -21,12 +21,12 @@ function createNoticeitem(item, isNotice) {
 
 	const BlogImgContainer = createElement("a", {
 		class: "notice-blog-img-container",
-		href: `https://velog.io/@${item.user}/`,
+		href: `https://velog.io/@${item.blog_id}/`,
 		target: "_blank",
 	});
 
 	const itemBlogImg = createElement("img", {
-		src: item.user_img,
+		src: item.blog_img,
 		class: "notice-blog-img",
 	});
 
@@ -34,7 +34,7 @@ function createNoticeitem(item, isNotice) {
 
 	const itemTitle = createElement("a", {
 		class: "notice-post-title",
-		href: `https://velog.io/@${item.user}/${item.link}`,
+		href: `https://velog.io/@${item.blog_id}/${item.link}`,
 		target: "_blank",
 	});
 

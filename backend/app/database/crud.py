@@ -35,17 +35,17 @@ def get_blogs(db: Session, skip: int = 0, limit: int = 100) -> List[models.Blog]
 def get_blog_by_id(db: Session, blog_id: str, error: bool = True) -> models.Blog:
     db_blog = db.query(models.Blog).filter(
         models.Blog.id == blog_id).first()
-    if(db_blog == None and error):
+    if (db_blog == None and error):
         raise NotFoundBlog(blog_id=blog_id)
     return db_blog
 
 
-def get_bookmarked_blogs_by_user(db: Session, user_id: int) -> List[models.Blog]:
-    db_bookmarks = db.query(models.Bookmark).filter(
-        models.Bookmark.user == user_id).all()
+def get_bookmarked_blogs_by_user_id(db: Session, user_id: int) -> List[models.Blog]:
+    db_user: models.User = db.query(models.User).filter(
+        models.User.id == user_id).first()
     bookmarked_blogs = []
-    for bookmark in db_bookmarks:
-        bookmarked_blogs.append(get_blog_by_id(db, blog_id=bookmark.blog))
+    for bookmark in db_user.bookmarks:
+        bookmarked_blogs.append(bookmark.blog)
     return bookmarked_blogs
 
 
@@ -73,7 +73,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100) -> List[models.User]
 def get_user_by_id(db: Session, user_id: str) -> models.User:
     db_user = db.query(models.User).filter(
         models.User.id == user_id).first()
-    if(db_user == None):
+    if (db_user == None):
         raise NotFoundUser(user_id=user_id)
     return db_user
 
@@ -87,9 +87,8 @@ async def add_bookmark_blog(db: Session, user_id: str, blog_id: str) -> models.B
         await create_blog(db, schemas.BlogBase(id=blog_id))
 
     db_bookmark = models.Bookmark(
-        id=user_id + blog_id,
-        user=user_id,
-        blog=blog_id,
+        user_id=user_id,
+        blog_id=blog_id,
         created_at=now,
         updated_at=now,
     )
@@ -102,7 +101,7 @@ async def add_bookmark_blog(db: Session, user_id: str, blog_id: str) -> models.B
 
 def delete_bookmark_blog(db: Session, user_id: str, blog_id: str) -> models.Bookmark:
     db_bookmark = db.query(models.Bookmark).filter(
-        models.Bookmark.user == user_id, models.Bookmark.blog == blog_id)
+        models.Bookmark.user_id == user_id, models.Bookmark.blog_id == blog_id)
     if db_bookmark.first() == None:
         raise NotFoundBookmark(user_id=user_id, blog_id=blog_id)
     db_bookmark.delete()
@@ -112,22 +111,23 @@ def delete_bookmark_blog(db: Session, user_id: str, blog_id: str) -> models.Book
 
 
 def get_archive_by_id(db: Session, user_id: str, skip: int = 0, limit: int = 15) -> List[models.Post]:
-    db_bookmarked_blogs = db.query(models.Bookmark).filter(
-        models.Bookmark.user == user_id)
+    db_bookmarks = db.query(models.Bookmark).filter(
+        models.Bookmark.user_id == user_id).all()
+
     bookmarked_blogs = [
-        bookmark.blog for bookmark in db_bookmarked_blogs.all()]
+        bookmark.blog.id for bookmark in db_bookmarks]
 
     if not bookmarked_blogs:
         return []
 
     db_posts = db.query(models.Post).filter(
-        models.Post.user.in_(bookmarked_blogs)).order_by(models.Post.created_at.desc()).offset(skip).limit(limit).all()
+        models.Post.blog_id.in_(bookmarked_blogs)).order_by(models.Post.created_at.desc()).offset(skip).limit(limit).all()
     return db_posts
 
 
 def is_bookmarked(db: Session, user_id: str, blog_id: str):
     db_bookmarked_blogs = db.query(models.Bookmark).filter(
-        models.Bookmark.user == user_id, models.Bookmark.blog == blog_id)
+        models.Bookmark.user_id == user_id, models.Bookmark.blog_id == blog_id)
 
     return db_bookmarked_blogs.first() != None
 

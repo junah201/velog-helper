@@ -1,12 +1,12 @@
-from sqlalchemy import Column, String, DateTime, func, Boolean, Integer, ForeignKey
-from sqlalchemy.orm import relationship
+"""
+from sqlalchemy import Column, String, DateTime, func, Boolean, Integer
 
 from app.database.database import Base
 from app.common.consts import VELOG_DEFAULT_PROFILE_IMG
 
 
-class User(Base):
-    __tablename__ = "users"
+class old_User(Base):
+    __tablename__ = "old_users"
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
     id = Column(
@@ -21,7 +21,6 @@ class User(Base):
         nullable=True,
         comment="이메일",
     )
-    bookmarks = relationship("Bookmark", back_populates="user")
     is_subscribed = Column(
         Boolean,
         nullable=False,
@@ -46,8 +45,8 @@ class User(Base):
         orm_mode = True
 
 
-class Blog(Base):
-    __tablename__ = "blogs"
+class old_Blog(Base):
+    __tablename__ = "old_blogs"
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
     id = Column(
@@ -63,8 +62,6 @@ class Blog(Base):
         default=VELOG_DEFAULT_PROFILE_IMG,
         comment="프로필 이미지 링크",
     )
-    bookmarks = relationship("Bookmark", back_populates="blog")
-    posts = relationship("Post", back_populates="blog")
     last_uploaded_at = Column(
         DateTime,
         nullable=False,
@@ -87,8 +84,8 @@ class Blog(Base):
     )
 
 
-class Post(Base):
-    __tablename__ = "posts"
+class old_Post(Base):
+    __tablename__ = "old_posts"
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
     id = Column(
@@ -103,12 +100,11 @@ class Post(Base):
         nullable=False,
         comment="포스트 제목",
     )
-    blog_id = Column(
+    user = Column(
         String(100),
-        ForeignKey("blogs.id")
+        nullable=False
     )
-    blog = relationship("Blog", back_populates="posts")
-    blog_img = Column(
+    user_img = Column(
         String(200),
         nullable=False
     )
@@ -141,8 +137,8 @@ class Post(Base):
     )
 
 
-class Bookmark(Base):
-    __tablename__ = "bookmarks"
+class old_Bookmark(Base):
+    __tablename__ = "old_bookmarks"
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
     id = Column(
@@ -152,10 +148,14 @@ class Bookmark(Base):
         nullable=False,
         comment="북마크 고유 번호",
     )
-    user_id = Column(String(100), ForeignKey("users.id"))
-    user = relationship("User", back_populates="bookmarks")
-    blog_id = Column(String(100), ForeignKey("blogs.id"))
-    blog = relationship("Blog", back_populates="bookmarks")
+    user = Column(
+        String(100),
+        nullable=False
+    )
+    blog = Column(
+        String(100),
+        nullable=False
+    )
     created_at = Column(
         DateTime,
         nullable=False,
@@ -169,3 +169,4 @@ class Bookmark(Base):
         onupdate=func.now(),
         comment="마지막 수정 시점"
     )
+"""

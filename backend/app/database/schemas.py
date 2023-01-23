@@ -32,6 +32,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     is_subscribed: bool
+    bookmarks: List = []
     created_at: datetime
     updated_at: datetime
 
@@ -42,8 +43,8 @@ class User(UserBase):
 class PostBase(BaseModel):
     id: str
     title: str
-    user: str
-    user_img: str
+    blog_id: str
+    blog_img: str
     link: str
     short_description: Optional[str]
 
@@ -63,8 +64,8 @@ class Post(PostBase):
 
 class BookmarkBase(BaseModel):
     id: str
-    user: str
-    blog: str
+    user_id: str
+    blog_id: str
 
 
 class BookmarkCreate(BookmarkBase):
@@ -74,6 +75,8 @@ class BookmarkCreate(BookmarkBase):
 class Bookmark(BookmarkBase):
     created_at: datetime
     updated_at: datetime
+    user: User
+    blog: Blog
 
     class Config:
         orm_mode = True
