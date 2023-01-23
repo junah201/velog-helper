@@ -319,6 +319,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				return response.json();
 			})
 			.then((data) => {
+				console.log(data);
 				sendResponse({
 					message: "success",
 					followers: data,

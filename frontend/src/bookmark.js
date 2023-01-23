@@ -52,20 +52,21 @@ if (document.querySelector(".bookmark-button") == null) {
 		console.log("SUCCES add bookmark button in top of post");
 	}
 
-	var followerIndicatorContainer = document.querySelector(
-		"div.sc-faUpoM.huXNdf"
-	);
-	if (!!followerContainer) {
+	var followerIndicatorContainer = document.querySelector("div.sc-faUpoM");
+	console.log(followerIndicatorContainer);
+	if (!!followerIndicatorContainer) {
 		browser.runtime.sendMessage(
 			{
 				message: "get_followers",
+				payload: window.location.pathname.split("/")[1].substring(1),
 			},
 			(response) => {
 				var followerIndicator = createElement("p", {
 					class: "follower-indicator",
 				});
 				followerIndicator.innerHTML = `팔로워 ${response.followers}명  <smail>해당 수치는 Velog Helper에 의해서 측정된 수치입니다.</smail>`;
-				followerContainer.after(bookmarkButton);
+				followerIndicatorContainer.after(bookmarkButton);
+				console.log("SUCCES add follower indicator");
 			}
 		);
 	}

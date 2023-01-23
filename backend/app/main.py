@@ -112,7 +112,7 @@ async def edit_email(user_id: str, email: str, db: Session = Depends(get_db)):
     return {"status": crud.edit_email(db, user_id=user_id, email=email)}
 
 
-@app.post("/{blog_id}/followers")
+@app.get("/{blog_id}/followers")
 async def get_followers(blog_id: str, db: Session = Depends(get_db)) -> int:
     return crud.get_followers(db, blog_id=blog_id)
 
