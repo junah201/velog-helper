@@ -1,12 +1,15 @@
 # Velog Helper - Change Log
 
+# [v1.1.0](https://github.com/junah201/velog-helper/releases/tag/v1.1.0)
+
+- #45 블로그가 몇명에 의해서 구독되고 있는지 알려줍니다.
+
 # [v1.0.0](https://github.com/junah201/velog-helper/releases/tag/v1.0.0)
 
 - #36 북마크 버튼을 포스트 상단에도 추가하여 사용자 경험을 개선하였습니다.
 - #37 최초 설치 시 신규 가이드 창이 떠서 사용법을 알려줍니다.
 - #38 Velog 내부 스크롤 디자인을 개선하였습니다.
 - #40 AWS lambda로 서버를 이전하였습니다.
-
 
 # [v0.2.1.9](https://github.com/junah201/velog-helper/releases/tag/v0.2.1.9)
 
