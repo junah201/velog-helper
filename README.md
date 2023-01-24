@@ -27,15 +27,14 @@
 
 2. `크롬에 추가` 버튼을 통해서 다운로드 해주세요.
 
-3. 각 블로그 내부에서 블로그명 바로 옆에 있는 별표시를 눌러서 즐겨찾기 해주세요. 
-<img src = "backend/app/static/image/guide/add_bookmark.png" width = "600px" />
+3. 각 블로그 내부에서 블로그명 바로 옆에 있는 별표시를 눌러서 즐겨찾기 해주세요.
+   <img src = "backend/app/static/image/guide/add_bookmark.png" width = "600px" />
 
 4. 종 모양의 알림 버튼을 눌러 새 글 알림을 확인해주세요. 만약 북마크한 블로그가 Velog Helper에 처음 등록된 블로그라면 알림이 표시되는데 시간이 걸릴 수 있습니다.
-<img src = "backend/app/static/image/guide/check_new_post.png" width = "600px" />
+   <img src = "backend/app/static/image/guide/check_new_post.png" width = "600px" />
 
 5. 이메일 알림을 받기 위해서 아래 이미지와 같이 오른쪽 상단에 팝업에서 이메일을 등록해주세요.
-<img src = "backend/app/static/image/guide/set_email.gif" width = "600px" />
-
+   <img src = "backend/app/static/image/guide/set_email.gif" width = "600px" />
 
 # 관련 문서
 
@@ -50,20 +49,7 @@
   <img src="https://t1.daumcdn.net/kakaopay/icons/favicon.ico" width=50/>
 </a>
 
-**후원 내역**
-
-| 날짜       | 성함   | 금액     | 메시지 | 수단   | 깃허브                                |
-| ---------- | ------ | -------- | ------ | ------ | ------------------------------------- |
-| 2022.11.24 | 박수혁 | 10,000원 | 박수혁 | 카카오 |                                       |
-| 2022.11.24 | 윤혜원 | 10,000원 | 윤혜원 | 카카오 |                                       |
-| 2022.11.25 | 위준우 | 10,000원 | 위준우 | 카카오 | [@wijoonwu](https://github.com/wijoonwu) |
-
-**사용 내역**
-
-| 날짜       | 금액         | 사용처           | 비고                              |
-| ---------- | ------------ | ---------------- | --------------------------------- |
-| 2023.01.01 | 5$ (6,549원) | Heroku 서버 비용 | 이 결제 이후 aws 람다로 이전 예정 |
-|            |              |                  |                                   |
+[후원 내역 및 후원 기록](sponsor.md)
 
 # 기타 문의
 
