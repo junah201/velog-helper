@@ -123,6 +123,7 @@ async function onUpdated(tabId) {
 			.catch((err) => console.log(err));
 	}
 	// 검색 페이지에 쿼리가 들어가 있다면
+	/*
 	if (
 		tab.status == "complete" &&
 		/^http/.test(tab.url) &&
@@ -135,18 +136,20 @@ async function onUpdated(tabId) {
 			files: ["./src/util.js", "./src/search.js"],
 		});
 	}
+	*/
 }
 
 browser.tabs.onUpdated.addListener(async (tabID, changeInfo, tab) => {
+	console.log("onUpdated");
 	await onUpdated(tabID);
 });
 
 browser.tabs.onReplaced.addListener(async (addedTabId, removedTabId) => {
+	console.log("onReplaced");
 	await onUpdated(addedTabId);
 });
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-	console.log(request);
 	if (request.message === "add_bookmark") {
 		browser.storage.local.get(["user_id", "user_email"], (data) => {
 			fetch(
@@ -164,6 +167,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				.then((data) => {
 					sendResponse({ message: "success" });
 					return;
+				})
+				.catch((err) => {
+					console.log(err);
 				});
 		});
 		return true;
@@ -184,6 +190,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				.then((data) => {
 					sendResponse({ message: "success" });
 					return;
+				})
+				.catch((err) => {
+					console.log(err);
 				});
 		});
 		return true;
@@ -201,6 +210,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				.then((data) => {
 					sendResponse({ message: "success", data: data });
 					return;
+				})
+				.catch((err) => {
+					console.log(err);
 				});
 		});
 		return true;
@@ -224,6 +236,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 						is_bookmarked: data.is_bookmarked,
 					});
 					return;
+				})
+				.catch((err) => {
+					console.log(err);
 				});
 		});
 		return true;
@@ -244,6 +259,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 						blogs: data.blogs,
 					});
 					return;
+				})
+				.catch((err) => {
+					console.log(err);
 				});
 		});
 		return true;
@@ -266,6 +284,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 						message: "success",
 					});
 					return;
+				})
+				.catch((err) => {
+					console.log(err);
 				});
 		});
 		return true;
@@ -286,6 +307,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 						email: data.email,
 					});
 					return;
+				})
+				.catch((err) => {
+					console.log(err);
 				});
 		});
 		return true;
@@ -300,15 +324,18 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				return response.json();
 			})
 			.then((data) => {
-				console.log(data);
 				sendResponse({
 					message: "success",
 					total: data.total,
 					results: data.results,
 				});
 				return;
+			})
+			.catch((err) => {
+				console.log(err);
 			});
-	} else if (request.message === "get_followers") {
+		return true;
+	} else if (request.message === "veloghelper-get_followers") {
 		fetch(`${Constants.BACKEND_URL}/${request.payload}/followers`, {
 			method: "GET",
 			headers: {
@@ -316,6 +343,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			},
 		})
 			.then((response) => {
+				console.log(response);
 				return response.json();
 			})
 			.then((data) => {
@@ -325,6 +353,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 					followers: data,
 				});
 				return;
+			})
+			.catch((err) => {
+				console.log(err);
 			});
+		return true;
 	}
 });

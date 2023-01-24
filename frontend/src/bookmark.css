@@ -12,3 +12,8 @@
 .yellow-bookmark-button > svg {
 	fill: yellow;
 }
+
+.follower-indicator {
+	margin: none;
+	font-size: 1rem;
+}

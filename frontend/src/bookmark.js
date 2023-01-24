@@ -38,8 +38,7 @@ function createBookmarkButton() {
 
 if (document.querySelector(".bookmark-button") == null) {
 	var blogProfile = document.querySelector("div > div.name");
-	console.log(blogProfile);
-	if (blogProfile != null && blogProfile != undefined) {
+	if (!!blogProfile) {
 		var bookmarkButton = createBookmarkButton();
 		blogProfile.append(bookmarkButton);
 		console.log("SUCCES add bookmark button in blog profile");
@@ -52,21 +51,25 @@ if (document.querySelector(".bookmark-button") == null) {
 		console.log("SUCCES add bookmark button in top of post");
 	}
 
-	var followerIndicatorContainer = document.querySelector("div.sc-faUpoM");
-	console.log(followerIndicatorContainer);
-	if (!!followerIndicatorContainer) {
+	var followerIndicatorContainer = document.querySelector(".description");
+	var originalFollowerIndicator = document.querySelector(".follower-indicator");
+	if (!!followerIndicatorContainer && !originalFollowerIndicator) {
+		followerIndicatorContainer.append(createElement("br", {}));
 		browser.runtime.sendMessage(
 			{
-				message: "get_followers",
+				message: "veloghelper-get_followers",
 				payload: window.location.pathname.split("/")[1].substring(1),
 			},
 			(response) => {
-				var followerIndicator = createElement("p", {
+				var followerIndicator = createElement("smail", {
 					class: "follower-indicator",
 				});
-				followerIndicator.innerHTML = `팔로워 ${response.followers}명  <smail>해당 수치는 Velog Helper에 의해서 측정된 수치입니다.</smail>`;
-				followerIndicatorContainer.after(bookmarkButton);
-				console.log("SUCCES add follower indicator");
+				followerIndicator.innerHTML = `팔로워 ${response?.followers || 0}명`;
+				// 중복 추가 방지
+				if (!document.querySelector(".follower-indicator")) {
+					followerIndicatorContainer.append(followerIndicator);
+					console.log("SUCCES add follower indicator");
+				}
 			}
 		);
 	}
