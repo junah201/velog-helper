@@ -32,8 +32,8 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
         db_post = models.Post(
             id=post["id"],
             title=post["title"],
-            user=post["user"]["username"],
-            user_img=post["user"]["profile"]["thumbnail"] if post["user"]["profile"]["thumbnail"] else VELOG_DEFAULT_PROFILE_IMG,
+            blog_id=post["user"]["username"],
+            blog_img=post["user"]["profile"]["thumbnail"] if post["user"]["profile"]["thumbnail"] else VELOG_DEFAULT_PROFILE_IMG,
             link=post["url_slug"],
             short_description=post["short_description"],
             created_at=post_uploaded_at,
@@ -46,11 +46,11 @@ async def update_new_post_by_blog(db: Session, blog: models.Blog, limit: int = 1
         db.refresh(db_post)
 
         db_users = db.query(models.Bookmark).filter(
-            models.Bookmark.blog == db_post.user).all()
+            models.Bookmark.blog_id == db_post.blog_id).all()
 
         for bookmarked_user in db_users:
             db_user = db.query(models.User).filter(
-                models.User.id == bookmarked_user.user).first()
+                models.User.id == bookmarked_user.user_id).first()
             if not db_user.email:
                 continue
 

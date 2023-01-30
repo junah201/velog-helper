@@ -55,7 +55,7 @@ async def update_edited_post_by_blog(db: Session, blog: models.Blog) -> List[str
 
         # 수정 안내 이메일 전송
         db_bookmarks = db.query(models.Bookmark).filter(
-            models.Bookmark.blog == db_post.user and models.Bookmark.user.in_(target_user)).all()
+            models.Bookmark.blog_id == db_post.blog_id and models.Bookmark.user_id.in_(target_user)).all()
 
         db_users = db.query(models.User).filter(
             models.User.id.in_([i.user for i in db_bookmarks])).all()
