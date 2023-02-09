@@ -38,6 +38,7 @@
 
 # 관련 문서
 
+- [변경 내역](CHANGELOG.md)
 - [개인정보처리방침](https://junah.notion.site/e297108af58744809dd6b9f1db49efe0)
 
 # 후원
