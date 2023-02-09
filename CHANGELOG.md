@@ -1,5 +1,9 @@
 # Velog Helper - Change Log
 
+# [v1.1.1](https://github.com/junah201/velog-helper/releases/tag/v1.1.1)
+
+- #47 스크롤 바 UI가 개선되었습니다.
+
 # [v1.1.0](https://github.com/junah201/velog-helper/releases/tag/v1.1.0)
 
 - #45 블로그가 몇명에 의해서 구독되고 있는지 알려줍니다.
