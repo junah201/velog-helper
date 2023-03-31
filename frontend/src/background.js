@@ -27,7 +27,11 @@ function registUser() {
 	});
 }
 
-browser.runtime.onInstalled.addListener(() => {
+browser.runtime.onInstalled.addListener((details) => {
+	// 초기 설치 시에만 실행
+	if (details.reason !== "install") {
+		return;
+	}
 	// whale 브라우저에서는 identity api 지원 중단으로 인해 예외처리 필요
 	if (!globalThis.whale) {
 		browser.identity.getProfileUserInfo(function (userInfo) {
