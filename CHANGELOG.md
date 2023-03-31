@@ -1,5 +1,9 @@
 # Velog Helper - Change Log
 
+# [v1.1.2](https://github.com/junah201/velog-helper/releases/tag/v1.1.2)
+
+- #48 가이드 창이 크롬 업데이트 시 뜨던 문제를 수정하였습니다.
+
 # [v1.1.1](https://github.com/junah201/velog-helper/releases/tag/v1.1.1)
 
 - #47 스크롤 바 UI가 개선되었습니다.
