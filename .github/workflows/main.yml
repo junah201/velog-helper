@@ -15,6 +15,7 @@ jobs:
           [
             VH__get-blog,
             VH__get-user,
+            VH__edit-user-email,
             VH__create-user,
             VH__get-bookmarked-blogs,
             VH__get-bookmark-blog,
@@ -27,6 +28,8 @@ jobs:
             path: ./backend/api/get_blog
           - lambda: VH__get-user
             path: ./backend/api/get_user
+          - lambda: VH__edit-user-email
+            path: ./backend/api/edit_user_email
           - lambda: VH__create-user
             path: ./backend/api/create_user
           - lambda: VH__get-bookmarked-blogs
