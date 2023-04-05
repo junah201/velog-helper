@@ -53,6 +53,8 @@ def lambda_handler(event, context):
                     "blog_img": post.blog_img,
                     "link": post.link,
                     "short_description": post.short_description,
+                    "created_at": post.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    "updated_at": post.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
                 }
                 for post in db_posts
             ]
