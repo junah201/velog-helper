@@ -18,6 +18,7 @@ jobs:
             VH__create-user,
             VH__get-bookmarked-blogs,
             VH__add-bookmark-blog,
+            VH__delete-bookmark-blog,
           ]
         include:
           - lambda: VH__get-blog
@@ -30,6 +31,8 @@ jobs:
             path: ./backend/api/get_bookmarked_blogs
           - lambda: VH__add-bookmark-blog
             path: ./backend/api/add_bookmark_blog
+          - lambda: VH__delete-bookmark-blog
+            path: ./backend/api/delete_bookmark_blog
 
     uses: junah201/velog-helper/.github/workflows/deploy.yml@main
     with:

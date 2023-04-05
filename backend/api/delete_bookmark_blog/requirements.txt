@@ -1,0 +1,3 @@
+SQLAlchemy == 1.4.39
+pymysql
+requests
