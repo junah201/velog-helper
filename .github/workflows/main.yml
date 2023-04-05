@@ -11,7 +11,13 @@ jobs:
   Deploy:
     strategy:
       matrix:
-        lambda: [VH__get-blog, VH__get-user, VH__create-user]
+        lambda:
+          [
+            VH__get-blog,
+            VH__get-user,
+            VH__create-user,
+            VH__get-bookmarked-blogs,
+          ]
         include:
           - lambda: VH__get-blog
             path: ./backend/api/get_blog
@@ -19,6 +25,8 @@ jobs:
             path: ./backend/api/get_user
           - lambda: VH__create-user
             path: ./backend/api/create_user
+          - lambda: VH__get-bookmarked-blogs
+            path: ./backend/api/get_bookmarked_blogs
 
     uses: junah201/velog-helper/.github/workflows/deploy.yml@main
     with:
