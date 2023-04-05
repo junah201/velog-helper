@@ -2,7 +2,6 @@ import database
 import models
 import json
 from typing import Optional
-from datetime import datetime
 import requests
 
 

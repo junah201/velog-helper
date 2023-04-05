@@ -14,6 +14,7 @@ jobs:
         lambda:
           [
             VH__get-blog,
+            VH__get-blog-followers,
             VH__get-user,
             VH__edit-user-email,
             VH__create-user,
@@ -26,6 +27,8 @@ jobs:
         include:
           - lambda: VH__get-blog
             path: ./backend/api/get_blog
+          - lambda: VH__get-blog-followers
+            path: ./backend/api/get_blog_followers
           - lambda: VH__get-user
             path: ./backend/api/get_user
           - lambda: VH__edit-user-email
