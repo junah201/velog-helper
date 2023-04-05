@@ -17,6 +17,7 @@ jobs:
             VH__get-user,
             VH__create-user,
             VH__get-bookmarked-blogs,
+            VH__get-bookmark-blog,
             VH__add-bookmark-blog,
             VH__delete-bookmark-blog,
             VH__get-posts,
@@ -30,6 +31,8 @@ jobs:
             path: ./backend/api/create_user
           - lambda: VH__get-bookmarked-blogs
             path: ./backend/api/get_bookmarked_blogs
+          - lambda: VH__get-bookmark-blog
+            path: ./backend/api/get_bookmark_blog
           - lambda: VH__add-bookmark-blog
             path: ./backend/api/add_bookmark_blog
           - lambda: VH__delete-bookmark-blog
