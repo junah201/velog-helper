@@ -1,6 +1,6 @@
 const Constants = {
 	BACKEND_URL:
-		"https://3bxsddbb222i3zghh77frbcyoa0pbwan.lambda-url.ap-northeast-2.on.aws",
+		"https://3t4g2w8kcf.execute-api.ap-northeast-2.amazonaws.com/prod",
 };
 
 globalThis.browser = (function () {
@@ -20,7 +20,7 @@ function registUser() {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				id: data.user_id,
+				user_id: data.user_id,
 				email: data.user_email,
 			}),
 		});
@@ -127,20 +127,16 @@ async function onUpdated(tabId) {
 			.catch((err) => console.log(err));
 	}
 	// 검색 페이지에 쿼리가 들어가 있다면
-	/*
 	if (
 		tab.status == "complete" &&
 		/^http/.test(tab.url) &&
-		tab.url != "https://velog.io/search" &&
-		tab.url.slice(0, 26) === "https://velog.io/search?q="
+		tab.url.slice(0, 23) === "https://velog.io/search"
 	) {
-		console.log("stert");
 		browser.scripting.executeScript({
 			target: { tabId: tab.id },
 			files: ["./src/util.js", "./src/search.js"],
 		});
 	}
-	*/
 }
 
 browser.tabs.onUpdated.addListener(async (tabID, changeInfo, tab) => {
@@ -156,58 +152,60 @@ browser.tabs.onReplaced.addListener(async (addedTabId, removedTabId) => {
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	if (request.message === "add_bookmark") {
 		browser.storage.local.get(["user_id", "user_email"], (data) => {
-			fetch(
-				`${Constants.BACKEND_URL}/${data.user_id}/blog?blog_id=${request.payload}`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-				}
-			)
-				.then((response) => {
-					return response.json();
-				})
-				.then((data) => {
-					sendResponse({ message: "success" });
-					return;
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		});
-		return true;
-	} else if (request.message === "delete_bookmark") {
-		browser.storage.local.get(["user_id", "user_email"], (data) => {
-			fetch(
-				`${Constants.BACKEND_URL}/${data.user_id}/blog?blog_id=${request.payload}`,
-				{
-					method: "DELETE",
-					headers: {
-						"Content-Type": "application/json",
-					},
-				}
-			)
-				.then((response) => {
-					return response.json();
-				})
-				.then((data) => {
-					sendResponse({ message: "success" });
-					return;
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		});
-		return true;
-	} else if (request.message === "get_new_post") {
-		browser.storage.local.get(["user_id", "user_email"], (data) => {
-			fetch(`${Constants.BACKEND_URL}/${data.user_id}/archive`, {
-				method: "GET",
+			fetch(`${Constants.BACKEND_URL}/user/${data.user_id}/blog`, {
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					Accept: "application/json",
 				},
+				body: JSON.stringify({
+					blog_id: request.payload,
+				}),
 			})
+				.then((response) => {
+					if (response.status === 204) {
+						sendResponse({ message: "success" });
+						return;
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		});
+	} else if (request.message === "delete_bookmark") {
+		browser.storage.local.get(["user_id", "user_email"], (data) => {
+			fetch(`${Constants.BACKEND_URL}/user/${data.user_id}/blog`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+				body: JSON.stringify({
+					blog_id: request.payload,
+				}),
+			})
+				.then((response) => {
+					if (response.status === 204) {
+						sendResponse({ message: "success" });
+						return;
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		});
+	} else if (request.message === "get_new_post") {
+		browser.storage.local.get(["user_id", "user_email"], (data) => {
+			fetch(
+				`${Constants.BACKEND_URL}/user/${data.user_id}/posts?skip=0&limit=15`,
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/json",
+					},
+				}
+			)
 				.then((response) => {
 					return response.json();
 				})
@@ -219,39 +217,42 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 					console.log(err);
 				});
 		});
-		return true;
 	} else if (request.message === "is_bookmarked") {
 		browser.storage.local.get(["user_id", "user_email"], (data) => {
 			fetch(
-				`${Constants.BACKEND_URL}/${data.user_id}/is_bookmarked?blog_id=${request.payload}`,
+				`${Constants.BACKEND_URL}/user/${data.user_id}/blog/${request.payload}`,
 				{
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",
+						Accept: "application/json",
 					},
 				}
 			)
 				.then((response) => {
-					return response.json();
-				})
-				.then((data) => {
+					if (response.status === 200) {
+						sendResponse({
+							message: "success",
+							is_bookmarked: true,
+						});
+						return;
+					}
 					sendResponse({
 						message: "success",
-						is_bookmarked: data.is_bookmarked,
+						is_bookmarked: false,
 					});
-					return;
 				})
 				.catch((err) => {
 					console.log(err);
 				});
 		});
-		return true;
 	} else if (request.message === "get_blogs") {
 		browser.storage.local.get(["user_id"], (data) => {
-			fetch(`${Constants.BACKEND_URL}/${data.user_id}/blogs`, {
+			fetch(`${Constants.BACKEND_URL}/user/${data.user_id}/blog/all`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
+					Accept: "application/json",
 				},
 			})
 				.then((response) => {
@@ -260,7 +261,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				.then((data) => {
 					sendResponse({
 						message: "success",
-						blogs: data.blogs,
+						blogs: data,
 					});
 					return;
 				})
@@ -268,22 +269,19 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 					console.log(err);
 				});
 		});
-		return true;
 	} else if (request.message === "veloghelper-change_email") {
 		browser.storage.local.get(["user_id"], (data) => {
-			fetch(
-				`${Constants.BACKEND_URL}/${data.user_id}/email?email=${request.payload}`,
-				{
-					method: "Post",
-					headers: {
-						"Content-Type": "application/json",
-					},
-				}
-			)
+			fetch(`${Constants.BACKEND_URL}/user/${data.user_id}/email`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+				data: JSON.stringify({
+					email: request.payload,
+				}),
+			})
 				.then((response) => {
-					return response.json();
-				})
-				.then((data) => {
 					sendResponse({
 						message: "success",
 					});
@@ -293,13 +291,13 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 					console.log(err);
 				});
 		});
-		return true;
 	} else if (request.message === "veloghelper-get_email") {
 		browser.storage.local.get(["user_id"], (data) => {
-			fetch(`${Constants.BACKEND_URL}/user?user_id=${data.user_id}`, {
+			fetch(`${Constants.BACKEND_URL}/user/${data.user_id}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
+					Accept: "application/json",
 				},
 			})
 				.then((response) => {
@@ -316,42 +314,18 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 					console.log(err);
 				});
 		});
-		return true;
-	} else if (request.message === "get_search_results") {
-		fetch(`${Constants.BACKEND_URL}/search?query=${request.payload}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((response) => {
-				return response.json();
-			})
-			.then((data) => {
-				sendResponse({
-					message: "success",
-					total: data.total,
-					results: data.results,
-				});
-				return;
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-		return true;
 	} else if (request.message === "veloghelper-get_followers") {
-		fetch(`${Constants.BACKEND_URL}/${request.payload}/followers`, {
+		fetch(`${Constants.BACKEND_URL}/blog/${request.payload}/followers`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
+				Accept: "application/json",
 			},
 		})
 			.then((response) => {
-				console.log(response);
 				return response.json();
 			})
 			.then((data) => {
-				console.log(data);
 				sendResponse({
 					message: "success",
 					followers: data,
@@ -361,6 +335,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			.catch((err) => {
 				console.log(err);
 			});
-		return true;
 	}
+	return true;
 });
