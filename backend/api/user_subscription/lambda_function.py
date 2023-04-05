@@ -27,7 +27,11 @@ def lambda_handler(event, context):
     if db_user is None:
         return {
             'statusCode': 405,
-            'headers': {'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*'},
+            'headers': {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            },
             'body': json.dumps('User already exists')
         }
 
@@ -40,8 +44,9 @@ def lambda_handler(event, context):
     return {
         'statusCode': 200,
         'headers': {
-            'Content-Type': 'text/html; charset=utf-8',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type'
         },
         'body': subscription_template.render(user_id=user_id)
     }

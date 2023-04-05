@@ -11,12 +11,22 @@ def lambda_handler(event, context):
     if user_id is None:
         return {
             'statusCode': 400,
+            'headers': {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            },
             'body': json.dumps('Missing user_id')
         }
 
     if blog_id is None:
         return {
             'statusCode': 400,
+            'headers': {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            },
             'body': json.dumps('Missing blog_id')
         }
 
@@ -28,13 +38,21 @@ def lambda_handler(event, context):
     if db_bookmark is None:
         return {
             'statusCode': 404,
-            'headers': {'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*'},
+            'headers': {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            },
             'body': json.dumps('Bookmark not found')
         }
 
     return {
         'statusCode': 200,
-        'headers': {'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*'},
+        'headers': {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        },
         'body': json.dumps(
             {
                 "id": db_bookmark.id,
