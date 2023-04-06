@@ -2,12 +2,11 @@ import database
 import models
 import json
 from typing import Optional
-import requests
 
 
 def lambda_handler(event, context):
     user_id = event.get("pathParameters", {}).get("user_id", None)
-    blog_id = event.get("body", {}).get("blog_id", None)
+    blog_id = event.get("pathParameters", {}).get("blog_id", None)
 
     if user_id is None:
         return {

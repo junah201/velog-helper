@@ -126,17 +126,6 @@ async function onUpdated(tabId) {
 			})
 			.catch((err) => console.log(err));
 	}
-	// 검색 페이지에 쿼리가 들어가 있다면
-	if (
-		tab.status == "complete" &&
-		/^http/.test(tab.url) &&
-		tab.url.slice(0, 23) === "https://velog.io/search"
-	) {
-		browser.scripting.executeScript({
-			target: { tabId: tab.id },
-			files: ["./src/util.js", "./src/search.js"],
-		});
-	}
 }
 
 browser.tabs.onUpdated.addListener(async (tabID, changeInfo, tab) => {
@@ -152,16 +141,16 @@ browser.tabs.onReplaced.addListener(async (addedTabId, removedTabId) => {
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	if (request.message === "add_bookmark") {
 		browser.storage.local.get(["user_id", "user_email"], (data) => {
-			fetch(`${Constants.BACKEND_URL}/user/${data.user_id}/blog`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-				},
-				body: JSON.stringify({
-					blog_id: request.payload,
-				}),
-			})
+			fetch(
+				`${Constants.BACKEND_URL}/user/${data.user_id}/blog/${request.payload}`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/json",
+					},
+				}
+			)
 				.then((response) => {
 					if (response.status === 204) {
 						sendResponse({ message: "success" });
@@ -174,16 +163,16 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		});
 	} else if (request.message === "delete_bookmark") {
 		browser.storage.local.get(["user_id", "user_email"], (data) => {
-			fetch(`${Constants.BACKEND_URL}/user/${data.user_id}/blog`, {
-				method: "DELETE",
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-				},
-				body: JSON.stringify({
-					blog_id: request.payload,
-				}),
-			})
+			fetch(
+				`${Constants.BACKEND_URL}/user/${data.user_id}/blog/${request.payload}`,
+				{
+					method: "DELETE",
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/json",
+					},
+				}
+			)
 				.then((response) => {
 					if (response.status === 204) {
 						sendResponse({ message: "success" });
