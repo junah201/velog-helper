@@ -1,5 +1,9 @@
 # Velog Helper - Change Log
 
+# [v1.2.1](https://github.com/junah201/velog-helper/releases/tag/v1.2.1)
+
+- 북마크 추가 및 삭제가 안되는 문제를 수정하였습니다.
+
 # [v1.2.0](https://github.com/junah201/velog-helper/releases/tag/v1.2.0)
 
 - DB를 서울 리전으로 이전하고, 모든 서버를 서버리스 아키텍처로 변경하여 서버 반응 시간이 단축되었습니다.
