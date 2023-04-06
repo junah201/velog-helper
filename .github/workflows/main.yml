@@ -25,6 +25,7 @@ jobs:
             VH__add-bookmark-blog,
             VH__delete-bookmark-blog,
             VH__get-posts,
+            VH__new-post-checker,
           ]
         include:
           - lambda: VH__get-blog
@@ -51,6 +52,8 @@ jobs:
             path: ./backend/api/delete_bookmark_blog
           - lambda: VH__get-posts
             path: ./backend/api/get_posts
+          - lambda: VH__new-post-checker
+            path: ./backend/cron/new_post
 
     uses: junah201/velog-helper/.github/workflows/deploy.yml@main
     with:

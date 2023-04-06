@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Velog-Helper</title>
+		<style>
+			html {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			a {
+				text-decoration: none;
+				color: #ffffff;
+			}
+			a:link {
+				text-decoration: none;
+				color: #ffffff;
+			}
+			a:visited {
+				text-decoration: none;
+				color: #ffffff;
+			}
+			a:hover {
+				text-decoration: none;
+				color: #ffffff;
+			}
+			a:active {
+				text-decoration: none;
+				color: #ffffff;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<a
+				href="https://chrome.google.com/webstore/detail/velog-helper/limdbpmjjehbmlnmkmaadbkklkmohbag"
+				target="_blank"
+				><img
+					src="https://render.myfonts.net/fonts/font_rend.php?id=0b79a6983364b97a8a7fb9d63a32ee6c&rt=Velog%20Helper&rs=75&w=635&rbe=&sc=2&nie=true&fg=000000&bg=FFFFFF&ft=&nf=1"
+					style="
+						display: block;
+						height: 65px;
+						margin: 0 auto;
+						margin-bottom: 1rem;
+					"
+			/></a>
+			<div style="max-width: 100%; width: 600px; margin: 0 auto">
+				<span>
+					<div
+						style="
+							font-weight: 400;
+							margin: 0;
+							font-size: 1.25rem;
+							color: #868e96;
+						"
+					>
+						새로운 글이 업로드되었습니다.
+					</div>
+					<div style="margin-top: 0.5rem">
+						<a
+							href="https://velog.io/@{{ user }}/{{ link }}"
+							style="
+								color: #495057;
+								text-decoration: none;
+								font-weight: 600;
+								font-size: 1.125rem;
+							"
+							onmouseover="this.style.textDecoration='underline'"
+							onmouseout="this.style.textDecoration='none'"
+							target="_blank"
+							>{{ title }}</a
+						>
+					</div>
+					<div
+						style="font-weight: 400; margin-top: 0.5rem; font-size: 1.75rem"
+					></div>
+					<div
+						style="
+							width: 100%;
+							height: 1px;
+							background: #cbd3da;
+							margin-top: 1rem;
+							margin-bottom: 1rem;
+						"
+					></div>
+				</span>
+				<div style="display: -webkit-flex; display: -ms-flexbox; display: flex">
+					<div>
+						<a href="https://velog.io/@{{ user }}" target="_blank">
+							<img
+								style="
+									height: 64px;
+									width: 64px;
+									display: block;
+									border-radius: 32px;
+								"
+								src="{{ user_img }}"
+							/>
+							<div style="margin-bottom: 0.5rem; text-align: center">
+								<a
+									href="https://velog.io/@{{ user }}"
+									style="
+										text-decoration: none;
+										color: #212529;
+										font-weight: 600;
+									"
+									onmouseover="this.style.textDecoration='underline'"
+									onmouseout="this.style.textDecoration='none'"
+									target="_blank"
+									>{{ user }}</a
+								>
+							</div>
+						</a>
+					</div>
+					<div style="margin-left: 1.5rem; color: #495057">
+						<div style="margin: 0; color: #495057">{{ short_description }}</div>
+						<div
+							style="font-size: 0.875rem; color: #adb5bd; margin-top: 1.5rem"
+						>
+							{{ released_year }}년 {{ released_month }}월 {{ released_day }}일
+						</div>
+						<a
+							href="https://velog.io/@{{ user }}/{{ link }}"
+							style="
+								display: inline-block;
+								outline: none;
+								border: none;
+								border-radius: 4px;
+								background: #845ef7;
+								color: white;
+								padding-top: 0.5rem;
+								padding-bottom: 0.5rem;
+								padding-left: 1rem;
+								padding-right: 1rem;
+								margin-top: 1rem;
+								font-size: 1rem;
+								font-weight: 600;
+								text-decoration: none;
+							"
+							onmouseover="this.style.textDecoration='underline'"
+							onmouseout="this.style.textDecoration='none'"
+							target="_blank"
+							>바로가기</a
+						>
+					</div>
+				</div>
+				<span>
+					<div
+						style="
+							width: 100%;
+							height: 1px;
+							background: #e9ecef;
+							margin-top: 4rem;
+							margin-bottom: 1rem;
+						"
+					></div>
+					<div style="font-size: 0.875rem; color: #adb5bd; font-style: italic">
+						본 메일은 발신전용 메일입니다.
+						<br />
+						댓글 알림을 이메일로 수신하는 것을 원하지 않는다면 이
+						<a
+							href="{{ BACKEND_SERVER_URL }}/subscription/{{ user_id }}?is_subscribe=false"
+							style="color: inherit; text-decoration: underline"
+							target="_blank"
+							>링크</a
+						>를 눌러주세요.
+						<br />
+						버그 제보 및 PR는
+						<a
+							href="https://github.com/junah201/velog-helper"
+							style="color: inherit; text-decoration: underline"
+							target="_blank"
+							>Github</a
+						>로 부탁드립니다.
+						<br />
+						Velog Helper |
+						<a
+							href="mailto:junah.dev@gmail.com"
+							target="_blank"
+							style="
+								font-size: 0.875rem;
+								color: #adb5bd;
+								font-style: italic;
+								text-decoration: underline;
+							"
+							>junah.dev@gmail.com</a
+						>
+						|
+						<a
+							href="https://junah.notion.site/e297108af58744809dd6b9f1db49efe0"
+							target="_blank"
+							style="
+								font-size: 0.875rem;
+								color: #adb5bd;
+								font-style: italic;
+								text-decoration: underline;
+							"
+							>개인정보 처리 방침</a
+						>
+					</div>
+				</span>
+			</div>
+		</div>
+	</body>
+</html>

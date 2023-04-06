@@ -117,7 +117,7 @@ class Post(Base):
         nullable=False
     )
     short_description = Column(
-        String(200),
+        String(300),
         nullable=True,
         default=None
     )
