@@ -1,5 +1,10 @@
 # Velog Helper - Change Log
 
+# [v1.2.2](https://github.com/junah201/velog-helper/releases/tag/v1.2.2)
+
+- Velog CSS 변경에 따른 기능 오류를 수정하였습니다.
+- 더 이상 팔로워가 없을 때에는 팔로워 수를 표시하지 않습니다.
+
 # [v1.2.1](https://github.com/junah201/velog-helper/releases/tag/v1.2.1)
 
 - 북마크 추가 및 삭제가 안되는 문제를 수정하였습니다.
