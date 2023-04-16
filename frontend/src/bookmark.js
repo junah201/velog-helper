@@ -61,6 +61,7 @@ if (document.querySelector(".bookmark-button") == null) {
 				payload: window.location.pathname.split("/")[1].substring(1),
 			},
 			(response) => {
+				if (response?.followers == "Blog not found") return;
 				var followerIndicator = createElement("smail", {
 					class: "follower-indicator",
 				});
