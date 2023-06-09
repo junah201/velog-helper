@@ -58,7 +58,7 @@ class Blog(Base):
         comment="블로그 고유 번호",
     )
     profile_img = Column(
-        String(200),
+        String(3000),
         nullable=False,
         default=VELOG_DEFAULT_PROFILE_IMG,
         comment="프로필 이미지 링크",
@@ -109,7 +109,7 @@ class Post(Base):
     )
     blog = relationship("Blog", back_populates="posts")
     blog_img = Column(
-        String(200),
+        String(3000),
         nullable=False
     )
     link = Column(
